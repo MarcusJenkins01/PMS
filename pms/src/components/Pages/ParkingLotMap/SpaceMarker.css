@@ -1,0 +1,17 @@
+.marker {
+  width: 32px;
+  height: 51px;
+  background-size: cover;
+  background-image: url('../../../../public/img/markers/marker_purple.png');
+}
+
+.marker-space-id {
+  display: block;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 10px;
+  left: 0;
+  font-weight: bold;
+  font-size: 0.55rem;
+}

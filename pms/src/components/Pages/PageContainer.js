@@ -4,7 +4,7 @@ import './PageContainer.css';
 
 function PageContainer(props) {
   return (
-    <div className="pms">
+    <div className="page">
       <header>
         <Navbar/>
       </header>
