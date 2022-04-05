@@ -1,3 +1,5 @@
+import RoundedButton from "../Buttons/RoundedButton";
+
 function LoginPage() {
   return (
     <form>
@@ -7,7 +9,7 @@ function LoginPage() {
       <input id="password" name="password" type="password" required/>
       <label htmlFor="password">Password</label>
 
-      <button type="button" id="submit">Submit</button>
+      <RoundedButton colour="green" submit={true}>SUBMIT</RoundedButton>
     </form>
   );
 }
