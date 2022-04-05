@@ -3,6 +3,14 @@
   box-sizing: border-box;
   border-radius: 10em;
   padding: 1em 2em;
+  font-size: 0.75em;
+  outline: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+a.rounded-button {
+  text-decoration: none;
 }
 
 .rounded-button.green {
