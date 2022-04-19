@@ -1,0 +1,42 @@
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+const accountsRouter = require('./routes/accounts.route');
+
+dotenv.config();
+
+const app = express();
+const port = process.env.PORT || 5000;
+
+// Allow port 3000 to send us requests (React)
+const corsOptions ={
+  origin: 'http://localhost:3000', 
+  credentials: true,
+  methods: ['GET','POST','HEAD','PUT','PATCH','DELETE'],
+  allowedHeaders: ['Content-Type'],
+  exposedHeaders: ['Content-Type']
+}
+app.use(cors(corsOptions));
+
+app.use(express.json());
+
+// Routes
+app.use('/accounts', accountsRouter);
+
+mongoose.connect(process.env.PMS_DB_URI, { useNewUrlParser: true,
+  useUnifiedTopology: true })
+.then(() => {
+  console.log('Connected to database');
+})
+.catch(err => {
+  console.log(err);
+  console.log('Database failed to connect');
+});
+
+const conn = mongoose.connection;
+
+app.listen(port, () => {
+  console.log(`Express running on port ${port}`);
+});

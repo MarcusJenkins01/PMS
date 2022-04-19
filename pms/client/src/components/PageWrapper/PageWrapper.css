@@ -1,0 +1,22 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+header {
+  position: relative;
+  z-index: 2;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+
+  padding: 3em;
+  color: #2e2e2e;
+  background-color: #F6F6F6;
+}
+
+header {
+  position: relative;
+  z-index: 2;
+}

@@ -1,0 +1,19 @@
+/* SubText */
+.form-subtext {
+  display: block;
+  margin-top: 1em;
+  margin-left: 0.25em;
+  font-size: 0.85em;
+}
+
+.form-subtext.link {
+  color: #535353;
+}
+
+.form-subtext.error {
+  color: #fd5b5b;
+}
+
+.form-subtext>a {
+  text-decoration: none;
+}

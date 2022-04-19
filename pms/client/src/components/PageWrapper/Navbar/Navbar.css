@@ -1,0 +1,22 @@
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+  padding: 1em 2em;
+  color: #333;
+}
+
+.brand {
+  text-decoration: none;
+  color: #333;
+}
+
+
+/* NavbarButton */
+.navbar-button {
+  text-decoration: none;
+  margin-left: 1em;
+  color: #333;
+}
