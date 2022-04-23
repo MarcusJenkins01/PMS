@@ -40,7 +40,7 @@ router.route('/login').post(async (req, res) => {
         }
       );
 
-      res.send({ err: false, info: "Details correct", token: token });
+      res.send({ err: false, info: "Details correct", email: user.email, admin: user.is_admin, token: token });
     } else {
       res.send({ err: true, info: "Couldn't find an account with that email and password combination" });
     }

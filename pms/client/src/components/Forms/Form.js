@@ -7,8 +7,6 @@ function Form(props) {
 
     let formJSON = Object.fromEntries(formData);
     props.process(formJSON);
-
-    console.log(formJSON);
   };
 
   return (

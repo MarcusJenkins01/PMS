@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import PageWrapper from "./components/PageWrapper/PageWrapper";
 import LoginPage from './components/Routes/LoginPage/LoginPage';
@@ -11,6 +11,12 @@ import AuthRoute from './components/Routes/AuthRoute';
 
 function App() {
   const [token, setToken] = useState();
+
+  useEffect(() => {
+    if (window.sessionStorage.getItem('token') != null) {
+      setToken(window.sessionStorage.getItem('token'));
+    }
+  }, []);
 
   return (
     <PageWrapper token={token}>

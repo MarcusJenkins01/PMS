@@ -1,8 +1,8 @@
 import LoginForm from "./LoginForm";
 
-function LoginPage() {
+function LoginPage(props) {
   return (
-    <LoginForm/>
+    <LoginForm setToken={props.setToken}/>
   );
 }
 

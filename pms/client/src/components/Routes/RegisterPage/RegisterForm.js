@@ -57,16 +57,16 @@ function RegisterForm() {
 
   return (
     registered ? <RegistrationConfirmation/> :
-      <Form submitText="REGISTER" process={processRegister}>
-        <TextInput name="fname" type="text">First name</TextInput>
-        <TextInput name="lname" type="text">Last name</TextInput>
-        <TextInput name="email" type="email">Email</TextInput>
-        <PasswordInput name="pass">Password</PasswordInput>
-        <TextInput name="cpass" type="password">Confirm password</TextInput>
-        <RoundedButton colour="green" submit={true}>REGISTER</RoundedButton>
-        <SubTextLink textPart1="Already have an account? Click " href="/register" textPart2=" to login"/>
-        { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
-      </Form>
+    <Form submitText="REGISTER" process={processRegister}>
+      <TextInput name="fname" type="text">First name</TextInput>
+      <TextInput name="lname" type="text">Last name</TextInput>
+      <TextInput name="email" type="email">Email</TextInput>
+      <PasswordInput name="pass">Password</PasswordInput>
+      <TextInput name="cpass" type="password">Confirm password</TextInput>
+      <RoundedButton colour="green" submit={true}>REGISTER</RoundedButton>
+      <SubTextLink textPart1="Already have an account? Click " href="/register" textPart2=" to login"/>
+      { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
+    </Form>
   );
 }
 
