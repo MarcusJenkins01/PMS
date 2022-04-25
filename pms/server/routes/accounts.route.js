@@ -3,10 +3,13 @@ const router = require('express').Router();
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const jwtMiddleware = require('../middlewares/jwt.middleware');
 
 let Account = require('../models/account.model');
 
 dotenv.config();
+
+router.use(jwtMiddleware);
 
 router.route('/login').post(async (req, res) => {
   let email = sanitize(req.body.email);
@@ -107,6 +110,10 @@ router.route('/register').post(async (req, res) => {
       res.send({ err: true, info: "Database error" });
     });
   });
+});
+
+router.route('/logout').post(async (req, res) => {
+  
 });
 
 module.exports = router;

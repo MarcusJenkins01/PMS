@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 let Booking = require('../models/booking.model');
+let BookingRequest = require('../models/bookingRequest.model');
 
 dotenv.config();
 

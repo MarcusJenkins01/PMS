@@ -8,6 +8,7 @@ import AdminPage from './components/Routes/AdminPage/AdminPage';
 import BookingPage from './components/Routes/BookingPage/BookingPage';
 import ParkingLotMap from './components/Routes/ParkingLotMap/ParkingLotMap';
 import AuthRoute from './components/Routes/AuthRoute';
+import LogoutRoute from './components/Routes/LogoutRoute';
 
 function App() {
   const [token, setToken] = useState();
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<LoginPage setToken={setToken}/>}/>
           <Route path="/register" element={<RegisterPage/>}/>
           <Route path="/book" element={<AuthRoute token={token}><BookingPage/></AuthRoute>}/>
+          <Route path="/logout" element={<LogoutRoute setToken={setToken}/>}/>
           <Route path="/" element={token ? <BookingPage/> : <LoginPage setToken={setToken}/>}/>
         </Routes>
       </BrowserRouter>
