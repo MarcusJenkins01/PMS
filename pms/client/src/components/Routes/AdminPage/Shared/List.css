@@ -1,0 +1,28 @@
+.list-item:first-of-type {
+  margin-top: 0;
+}
+
+.list-item {
+  margin-top: 1em;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 1em 2em;
+  background-color: white;
+  border-radius: 0.5em;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+.list-item>.left {
+  display: flex;
+  column-gap: 1em;
+}
+
+.list-item>.right {
+  display: flex;
+  column-gap: 0.5em;
+}

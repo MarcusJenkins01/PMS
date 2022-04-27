@@ -28,6 +28,7 @@ function App() {
           <Route path="/book" element={<AuthRoute token={token}><BookingPage/></AuthRoute>}/>
           <Route path="/logout" element={<LogoutRoute setToken={setToken}/>}/>
           <Route path="/" element={token ? <BookingPage/> : <LoginPage setToken={setToken}/>}/>
+          <Route path="/admin" element={<AdminPage/>}/>
         </Routes>
       </BrowserRouter>
     </PageWrapper>
