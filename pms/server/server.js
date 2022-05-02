@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 const accountsRouter = require('./routes/accounts.route');
+const bookingsRouter = require('./routes/bookings.route');
+const chatRouter = require('./routes/chat.route');
 
 dotenv.config();
 
@@ -24,6 +26,8 @@ app.use(express.json());
 
 // Routes
 app.use('/accounts', accountsRouter);
+app.use('/bookings', bookingsRouter);
+app.use('/chat', chatRouter);
 
 mongoose.connect(process.env.PMS_DB_URI, { useNewUrlParser: true,
   useUnifiedTopology: true })
