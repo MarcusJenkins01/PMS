@@ -46,7 +46,7 @@ function LoginForm(props) {
   
   return (
     success ? <LoginConfirmation/> :
-    <Form submitText="LOGIN" process={processLogin}>
+    <Form process={processLogin}>
       <TextInput name="email" type="email">Email</TextInput>
       <PasswordInput name="pass">Password</PasswordInput>
       <RoundedButton colour="green" submit={true}>LOGIN</RoundedButton>

@@ -29,13 +29,9 @@ function BookingForm(props) {
   }
   
   return (
-    success ? <LoginConfirmation/> :
-    <Form submitText="LOGIN" process={processBookingRequest}>
-      <TextInput name="email" type="email">Email</TextInput>
-      <PasswordInput name="pass">Password</PasswordInput>
-      <RoundedButton colour="green" submit={true}>LOGIN</RoundedButton>
-      <SubTextLink textPart1="Don't have an account? Click " href="/register" textPart2=" to register"/>
-      { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
+    <Form process={processBookingRequest}>
+      <TextInput name="location">Destination</TextInput>
+      <RoundedButton colour="green" submit={true}>SUBMIT</RoundedButton>
     </Form>
   );
 }
