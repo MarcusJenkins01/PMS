@@ -13,12 +13,12 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Allow port 3000 to send us requests (React)
+// Allow cross-origin requests from port 3000, and add our Authorisation header to the allowed header list
 const corsOptions ={
   origin: 'http://localhost:3000', 
   credentials: true,
   methods: ['GET','POST','HEAD','PUT','PATCH','DELETE'],
-  allowedHeaders: ['Content-Type'],
+  allowedHeaders: ['Content-Type', 'Authorisation'],
   exposedHeaders: ['Content-Type']
 }
 app.use(cors(corsOptions));

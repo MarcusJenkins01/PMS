@@ -1,7 +1,7 @@
 const sanitize = require('mongo-sanitize');
 const router = require('express').Router();
 const dotenv = require('dotenv');
-const jwt = require('jsonwebtoken');
+const jwtMiddleware = require('../middlewares/jwt.middleware');
 
 const ParkingSpace = require('../models/parkingSpace.model');
 const ParkingLot = require('../models/parkingLot.model');
@@ -9,6 +9,8 @@ const Account = require('../models/account.model');
 const mongoose = require('mongoose');
 
 dotenv.config();
+
+router.use(jwtMiddleware);
 
 // router.route('/spaces/:lotid').get(async (req, res) => {
 //   let lotID = sanitize(req.params.lotid);
@@ -23,6 +25,16 @@ dotenv.config();
 // });
 
 router.route('/lotdata').get(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   ParkingLot.aggregate([
     {
       "$lookup": {
@@ -41,6 +53,16 @@ router.route('/lotdata').get(async (req, res) => {
 });
 
 router.route('/lotdata/:lotid').get(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   let lotID = sanitize(req.params.lotid);
   
   ParkingLot.aggregate([
@@ -69,6 +91,16 @@ router.route('/lotdata/:lotid').get(async (req, res) => {
 });
 
 router.route('/addlot').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   let lotName = sanitize(req.body.lotName);
 
   ParkingLot.findOne({ name: lotName }).then(dbRes => {
@@ -88,6 +120,16 @@ router.route('/addlot').post(async (req, res) => {
 });
 
 router.route('/deletelot').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   let lotID = sanitize(req.body.lotID);
 
   ParkingLot.findByIdAndDelete(lotID)
@@ -101,6 +143,16 @@ router.route('/deletelot').post(async (req, res) => {
 });
 
 router.route('/addspace').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   let lotID = sanitize(req.body.lotID);
   let name = sanitize(req.body.name);
   let longitude = sanitize(req.body.longitude);
@@ -146,6 +198,16 @@ router.route('/addspace').post(async (req, res) => {
 });
 
 router.route('/blockspace').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   let spaceID = sanitize(req.body.spaceID);
 
   ParkingSpace.findOneAndUpdate(
@@ -161,6 +223,16 @@ router.route('/blockspace').post(async (req, res) => {
 });
 
 router.route('/unblockspace').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   let spaceID = sanitize(req.body.spaceID);
 
   ParkingSpace.findOneAndUpdate(
@@ -176,6 +248,16 @@ router.route('/unblockspace').post(async (req, res) => {
 });
 
 router.route('/deletespace').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   let spaceID = sanitize(req.body.spaceID);
 
   ParkingSpace.findByIdAndDelete(spaceID)
@@ -188,9 +270,17 @@ router.route('/deletespace').post(async (req, res) => {
   });
 });
 
-
-
 router.route('/users').get(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   Account.find()
   .then(dbRes => {
     res.send(dbRes);
@@ -201,6 +291,16 @@ router.route('/users').get(async (req, res) => {
 });
 
 router.route('/deleteuser').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
   let userID = sanitize(req.body.userID);
 
   Account.findByIdAndDelete(userID)

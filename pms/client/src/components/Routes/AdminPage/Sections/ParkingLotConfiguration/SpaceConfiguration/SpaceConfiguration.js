@@ -12,7 +12,7 @@ import { useParams } from "react-router";
 
 const SpaceConfiguration = (props) => {
   const [addingSpace, setAddingSpace] = useState(false);
-  const [lotData, setLotData] = useState([]);
+  const [lotData, setLotData] = useState({});
   const [confirmDeleteID, setConfirmDeleteID] = useState();
   const [confirmBlockID, setConfirmBlockID] = useState();
 
@@ -40,7 +40,7 @@ const SpaceConfiguration = (props) => {
     http.get(`/admin/lotdata/${lotid}`)
     .then(res => {
       if (res.data.err) {
-        setLotData([]);
+        setLotData({});
         return;
       }
 

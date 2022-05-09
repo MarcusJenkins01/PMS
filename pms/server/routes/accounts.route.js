@@ -3,13 +3,10 @@ const router = require('express').Router();
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const jwtMiddleware = require('../middlewares/jwt.middleware');
 
 let Account = require('../models/account.model');
 
 dotenv.config();
-
-router.use(jwtMiddleware);
 
 router.route('/login').post(async (req, res) => {
   let email = sanitize(req.body.email);
@@ -36,14 +33,16 @@ router.route('/login').post(async (req, res) => {
   bcrypt.compare(enteredPass, user.password, (err, correct) => {
     if (correct) {
       const token = jwt.sign(
-        { email: user.email, admin: user.is_admin },
-        process.env.JWT_KEY,
         {
-          expiresIn: "2h",
-        }
+          id: user._id,
+          email: user.email,
+          admin: user.admin,
+        },
+        process.env.JWT_KEY,
+        { expiresIn: "2h" }
       );
 
-      res.send({ err: false, info: "Details correct", email: user.email, admin: user.is_admin, token: token });
+      res.send({ err: false, info: "Details correct", email: user.email, admin: user.admin, token: token });
     } else {
       res.send({ err: true, info: "Couldn't find an account with that email and password combination" });
     }
@@ -57,7 +56,7 @@ router.route('/register').post(async (req, res) => {
   let pass = sanitize(req.body.pass);
 
   let user = await Account.findOne({ email: email });
-  
+
   if (fname.length === 0) {
     res.send({ err: true, info: "Please enter a first name" });
     return;
@@ -108,8 +107,8 @@ router.route('/register').post(async (req, res) => {
   });
 });
 
-router.route('/logout').post(async (req, res) => {
+// router.route('/logout').post(async (req, res) => {
   
-});
+// });
 
 module.exports = router;

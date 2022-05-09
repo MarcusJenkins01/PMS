@@ -18,6 +18,11 @@ const ParkingLotConfiguration = (props) => {
 
   useEffect(() => {
     http.get('/admin/lotdata').then(res => {
+      if (res.data.err) {
+        setLotData({});
+        return;
+      }
+
       setLotData(res.data);
     });
   }, []);
@@ -34,7 +39,7 @@ const ParkingLotConfiguration = (props) => {
 
       <List>
         {
-          lotData.length === 0 ? <ListItemEmpty/> :
+          Object.keys(lotData).length === 0 ? <ListItemEmpty/> :
           Object.keys(lotData).map((key, i) => {
             let entry = lotData[key];
             return <LotItem confirmDelete={setConfirmID} lotID={entry._id} lotName={entry.name} spaceNum={entry.spaces.length}/>
