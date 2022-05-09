@@ -10,11 +10,16 @@ function Form(props) {
   };
 
   return (
-    <div className="card">
+    props.disableStyling ?
       <form onSubmit={processSubmit}>
         {props.children}
       </form>
-    </div>
+    :
+      <div className="card">
+        <form onSubmit={processSubmit}>
+          {props.children}
+        </form>
+      </div>
   )
 }
 

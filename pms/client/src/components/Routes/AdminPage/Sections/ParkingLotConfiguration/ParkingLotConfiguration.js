@@ -1,25 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import List from "../../Shared/List";
 import LotItem from "./LotItem";
-import SpaceConfiguration from "./SpaceConfiguration/SpaceConfiguration";
+import AddButton from "./AddButton";
+import AddParkingLot from "./AddParkingLot";
+import ConfirmModal from "../../Shared/ConfirmModal";
+import ListItemEmpty from "../../Shared/ListItemEmpty";
+import Title from "../../../../Shared/Title";
+
+import http from '../../../../../axios-configuration';
+
+import './ParkingLotConfiguration.css';
 
 const ParkingLotConfiguration = (props) => {
-  const [lotData, setLotData] = useState(["A01", "A02"]);
-  const [configuringLotID, setConfiguringLotID] = useState();
+  const [lotData, setLotData] = useState({});
+  const [addingParkingLot, setAddingParkingLot] = useState(false);
+  const [confirmID, setConfirmID] = useState();
 
-  const configureLot = (id) => {
-    setConfiguringLotID(id);
+  useEffect(() => {
+    http.get('/admin/lotdata').then(res => {
+      setLotData(res.data);
+    });
+  }, []);
+
+  const deleteLot = (id) => {
+    http.post(`/admin/deletelot`, { lotID: id }).then(() => {
+      window.location.reload();
+    });
   }
   
-  const deleteLot = (id) => {
-    
-  }
-
   return (
-    configuringLotID ? <SpaceConfiguration lotID={configuringLotID}/> :
-    <List>
-      { lotData.map((lot) => <LotItem lotID={lot} configureLot={configureLot}/>) }
-    </List>
+    <div id="parking-lot-configuration">
+      <Title>Parking lots</Title>
+
+      <List>
+        {
+          lotData.length === 0 ? <ListItemEmpty/> :
+          Object.keys(lotData).map((key, i) => {
+            let entry = lotData[key];
+            return <LotItem confirmDelete={setConfirmID} lotID={entry._id} lotName={entry.name} spaceNum={entry.spaces.length}/>
+          })
+        }
+      </List>
+  
+      <AddButton stateFunction={setAddingParkingLot}/>
+      { addingParkingLot ? <AddParkingLot setAddingState={setAddingParkingLot}/> : <></> }
+
+      {
+        confirmID ?
+        <ConfirmModal yes={() => deleteLot(confirmID)} no={() => setConfirmID(null)}>
+          Are you sure you want to delete this parking lot?
+        </ConfirmModal>
+        : <></>
+      }
+    </div>
   );
 };
 

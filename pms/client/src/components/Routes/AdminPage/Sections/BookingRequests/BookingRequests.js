@@ -18,7 +18,7 @@ const BookingRequests = (props) => {
   };
 
   return (
-    <div>
+    <div id="booking-requests">
       <List>
         <RequestItem spaceId={1} assignSpace={assignSpace} reject={reject} location="Sci 2.81" startDate="7:00 27/04/22" endDate="8:00 27/04/22"/>
         <RequestItem spaceId={2} assignSpace={assignSpace} reject={reject} location="Sci 2.81" startDate="7:00 27/04/22" endDate="8:00 27/04/22"/>

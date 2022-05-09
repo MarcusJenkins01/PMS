@@ -57,11 +57,7 @@ router.route('/register').post(async (req, res) => {
   let pass = sanitize(req.body.pass);
 
   let user = await Account.findOne({ email: email });
-  console.log(fname);
-  console.log(lname);
-  console.log(email);
-  console.log(pass);
-
+  
   if (fname.length === 0) {
     res.send({ err: true, info: "Please enter a first name" });
     return;

@@ -9,13 +9,17 @@ let BookingRequest = require('../models/bookingRequest.model');
 
 dotenv.config();
 
-router.route('/request').post(async (req, res) => {
+router.route('/make').post(async (req, res) => {
   let token = sanitize(req.body.token);
 
   
 });
 
-router.route('/respond').post(async (req, res) => {
+router.route('/accept').post(async (req, res) => {
+  let token = sanitize(req.body.token);
+});
+
+router.route('/reject').post(async (req, res) => {
   let token = sanitize(req.body.token);
 });
 

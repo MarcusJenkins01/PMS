@@ -1,4 +1,22 @@
-.admin-dashboard {
+#admin-dashboard {
+  background-color: white;
+  border-radius: 1em;
   max-width: 80em;
   margin: auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 1em;
+  column-gap: 1em;
+  box-sizing: border-box;
+  padding: 2em;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.selection-button {
+  border-radius: 0.5em;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 37.25em;
+  height: 20em;
 }

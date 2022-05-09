@@ -1,0 +1,11 @@
+.divider {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.page-title {
+  font-weight: normal;
+  font-size: 1.4em;
+  margin-bottom: 2em;
+  margin-left: 0.1em;
+}

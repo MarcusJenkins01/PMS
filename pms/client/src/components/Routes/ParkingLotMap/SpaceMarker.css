@@ -2,10 +2,9 @@
   width: 32px;
   height: 51px;
   background-size: cover;
-  background-image: url('../../../../public/img/markers/marker_purple.png');
 }
 
-.marker-space-id {
+.marker-space-name {
   display: block;
   position: absolute;
   width: 100%;
@@ -14,4 +13,20 @@
   left: 0;
   font-weight: bold;
   font-size: 0.55rem;
+}
+
+.marker.purple {
+  background-image: url('../../../../public/img/markers/marker_purple.png');
+}
+
+.marker.pink {
+  background-image: url('../../../../public/img/markers/marker_pink.png');
+}
+
+.marker.blue {
+  background-image: url('../../../../public/img/markers/marker_blue.png');
+}
+
+.marker.red {
+  background-image: url('../../../../public/img/markers/marker_red.png');
 }

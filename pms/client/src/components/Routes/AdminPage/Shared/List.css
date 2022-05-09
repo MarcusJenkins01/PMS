@@ -20,9 +20,11 @@
 .list-item>.left {
   display: flex;
   column-gap: 1em;
+  align-items: center;
 }
 
 .list-item>.right {
   display: flex;
   column-gap: 0.5em;
+  align-items: center;
 }

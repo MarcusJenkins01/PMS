@@ -4,15 +4,15 @@ import './SpaceMarker.css';
 
 function SpaceMarker(props) {
   const markerIcon = new L.DivIcon({
-    className: 'marker',
+    className: `marker ${props.colour || "purple"}`,
     iconSize: [32, 51],
     iconAnchor: [16, 51],
-    html: `<span class="marker-space-id">${props.spaceId}</span>`
+    html: `<span class="marker-space-name">${props.spaceName}</span>`
   });
 
   return (
     <Marker position={props.position}
-      key={`marker_${props.spaceId}`}
+      key={`marker_${props.spaceID}`}
       icon={markerIcon}
       eventHandlers={{
         mouseover: () => {},

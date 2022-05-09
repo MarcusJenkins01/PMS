@@ -11,9 +11,11 @@ main {
   position: relative;
   z-index: 1;
 
-  padding: 3em;
+  padding: 5em 3em;
   color: #2e2e2e;
   background-color: #F6F6F6;
+
+  min-height: 60vh;
 }
 
 header {

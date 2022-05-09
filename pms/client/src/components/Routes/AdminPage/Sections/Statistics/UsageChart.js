@@ -5,16 +5,12 @@ const UsageChart = (props) => {
   const [series, setSeries] = useState([
     {
       name: 'Available',
-      data: [10, 6, 17]
+      data: props.availableData
     },
     {
       name: 'Reserved',
-      data: [5, 10, 17]
-    },
-    {
-      name: 'Occupied',
-      data: [4, 5, 10]
-    },
+      data: props.reservedData
+    }
   ]);
 
   const [options, setOptions] = useState({
@@ -47,7 +43,7 @@ const UsageChart = (props) => {
     },
     xaxis: {
       type: 'string',
-      categories: ['West car park', 'East car park', 'Main car park'],
+      categories: props.parkingLots,
     },
     legend: {
       position: 'right',

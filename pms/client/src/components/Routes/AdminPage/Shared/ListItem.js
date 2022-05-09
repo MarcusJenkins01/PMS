@@ -1,13 +1,3 @@
-import RoundedButton from '../../../Forms/Inputs/RoundedButton';
-
-const assignSpace = () => {
-
-};
-
-const reject = () => {
-  
-};
-
 const ListItem = (props) => {
   return (
     <div className="list-item">
