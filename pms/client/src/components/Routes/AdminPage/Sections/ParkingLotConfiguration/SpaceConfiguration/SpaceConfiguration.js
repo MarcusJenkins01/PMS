@@ -62,12 +62,13 @@ const SpaceConfiguration = (props) => {
       </List>
 
       <AddButton stateFunction={setAddingSpace}/>
-      {addingSpace ? <AddSpace spaceData={lotData.spaces} lotID={lotid} close={() => setAddingSpace(false)}/> : <></>}
+      { addingSpace ? <AddSpace spaceData={lotData.spaces} lotID={lotid} close={() => setAddingSpace(false)}/> : <></> }
       
       {
         confirmBlockID ?
         <ConfirmModal yes={() => blockSpace(confirmBlockID)} no={() => setConfirmBlockID(null)}>
           Are you sure you want to block this parking space?
+          Blocking this parking space will cancel all bookings made for this space.
         </ConfirmModal>
         : <></>
       }

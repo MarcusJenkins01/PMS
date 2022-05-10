@@ -6,7 +6,7 @@ function PageTemplate(props) {
   return (
     <div className="page-wrapper">
       <header>
-        <Navbar token={props.token}/>
+        <Navbar token={props.token} admin={props.admin}/>
       </header>
 
       <main>

@@ -6,7 +6,7 @@ function Navbar(props) {
   return (
     <div className="navbar">
       <NavbarLeft/>
-      <NavbarRight token={props.token}/>
+      <NavbarRight token={props.token} admin={props.admin}/>
     </div>
   );
 }

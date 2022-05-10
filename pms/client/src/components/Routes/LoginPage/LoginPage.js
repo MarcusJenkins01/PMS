@@ -2,7 +2,7 @@ import LoginForm from "./LoginForm";
 
 function LoginPage(props) {
   return (
-    <LoginForm setToken={props.setToken}/>
+    <LoginForm setToken={props.setToken} setAdmin={props.setAdmin}/>
   );
 }
 

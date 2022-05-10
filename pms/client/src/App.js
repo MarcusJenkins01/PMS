@@ -7,7 +7,6 @@ import RegisterPage from './components/Routes/RegisterPage/RegisterPage';
 import AdminPage from './components/Routes/AdminPage/AdminPage';
 import BookingPage from './components/Routes/BookingPage/BookingPage';
 import ParkingLotMap from './components/Routes/ParkingLotMap/ParkingLotMap';
-import AuthRoute from './components/Routes/AuthRoute';
 import LogoutRoute from './components/Routes/LogoutRoute';
 import SpaceConfiguration from './components/Routes/AdminPage/Sections/ParkingLotConfiguration/SpaceConfiguration/SpaceConfiguration';
 import ParkingLotConfiguration from './components/Routes/AdminPage/Sections/ParkingLotConfiguration/ParkingLotConfiguration';
@@ -17,28 +16,36 @@ import UserManagement from './components/Routes/AdminPage/Sections/UserManagemen
 
 function App() {
   const [token, setToken] = useState();
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     if (window.sessionStorage.getItem('token') != null) {
       setToken(window.sessionStorage.getItem('token'));
     }
+
+    if (window.sessionStorage.getItem('admin') != null) {
+      // sessionStorage stores as a string, so use JSON.parse to convert back to boolean
+      setAdmin(JSON.parse(window.sessionStorage.getItem('admin')));
+    }
   }, []);
 
+  console.log(admin)
+
   return (
-    <PageWrapper token={token}>
+    <PageWrapper token={token} admin={admin}>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginPage setToken={setToken}/>}/>
+          <Route path="/login" element={<LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/register" element={<RegisterPage/>}/>
-          <Route path="/book" element={<AuthRoute token={token}><BookingPage/></AuthRoute>}/>
+          <Route path="/book" element={token ? <BookingPage/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
+          <Route path="/" element={token ? <BookingPage/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/logout" element={<LogoutRoute setToken={setToken}/>}/>
-          <Route path="/" element={token ? <BookingPage/> : <LoginPage setToken={setToken}/>}/>
-          <Route path="/admin" element={<AdminPage/>}/>
-          <Route path="/admin/lots" element={<ParkingLotConfiguration/>}/>
-          <Route path="/admin/requests" element={<BookingRequests/>}/>
-          <Route path="/admin/statistics" element={<Statistics/>}/>
-          <Route path="/admin/users" element={<UserManagement/>}/>
-          <Route path="/admin/spaces/:lotid" element={<SpaceConfiguration/>}/>
+          <Route path="/admin" element={token && admin === true ? <AdminPage/> : <BookingPage/>}/>
+          <Route path="/admin/lots" element={token && admin === true ? <ParkingLotConfiguration/> : <BookingPage/>}/>
+          <Route path="/admin/requests" element={token && admin === true ? <BookingRequests/> : <BookingPage/>}/>
+          <Route path="/admin/statistics" element={token && admin === true ? <Statistics/> : <BookingPage/>}/>
+          <Route path="/admin/users" element={token && admin === true ? <UserManagement/> : <BookingPage/>}/>
+          <Route path="/admin/spaces/:lotid" element={token && admin === true ? <SpaceConfiguration/> : <BookingPage/>}/>
         </Routes>
       </BrowserRouter>
     </PageWrapper>

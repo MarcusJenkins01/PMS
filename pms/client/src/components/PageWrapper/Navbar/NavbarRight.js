@@ -2,10 +2,13 @@ import NavbarButton from "./NavbarButton";
 
 function NavbarRight(props) {
   return (
-    props.token ? <NavbarButton href="/logout">Sign out</NavbarButton> :
     <div className="navbar-right">
-      <NavbarButton href="/login">Login</NavbarButton>
-      <NavbarButton href="/register">Register</NavbarButton>
+      { (props.token && props.admin) ? <NavbarButton href="/admin">Admin dashboard</NavbarButton> : <></> }
+
+      { props.token ? <NavbarButton href="/logout">Sign out</NavbarButton> : <>
+        <NavbarButton href="/login">Login</NavbarButton>
+        <NavbarButton href="/register">Register</NavbarButton>
+      </> }
     </div>
   );
 }

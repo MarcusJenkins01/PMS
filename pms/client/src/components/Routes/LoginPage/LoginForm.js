@@ -37,6 +37,11 @@ function LoginForm(props) {
         props.setToken(res.data.token);
         window.sessionStorage.setItem('token', res.data.token);
 
+        props.setAdmin(res.data.admin);
+        window.sessionStorage.setItem('admin', res.data.admin);
+
+        console.log(res.data.admin);
+
         setSuccess(true);
         console.log(res.data);
         console.log("Successfully logged in")
