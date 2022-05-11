@@ -2,11 +2,14 @@ import List from "../../Shared/List";
 import RequestItem from "./RequestItem";
 import AssignForm from "./AssignForm/AssignForm";
 import './BookingRequests.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Title from '../../../../Shared/Title';
+import ListItemEmpty from "../../Shared/ListItemEmpty";
 
 import http from "../../../../../axios-configuration.js";
 
 const BookingRequests = (props) => {
+  const [requestData, setRequestData] = useState({});
   const [assigning, setAssigning] = useState();
 
   const assignSpace = (id) => {
@@ -17,14 +20,29 @@ const BookingRequests = (props) => {
     
   };
 
+  useEffect(() => {
+    http.get('/admin/bookingrequests').then(res => {
+      if (res.data.err) {
+        setRequestData({});
+        return;
+      }
+
+      setRequestData(res.data);
+    });
+  }, []);
+
   return (
     <div id="booking-requests">
+      <Title>Booking requests</Title>
+
       <List>
-        <RequestItem spaceId={1} assignSpace={assignSpace} reject={reject} location="Sci 2.81" startDate="7:00 27/04/22" endDate="8:00 27/04/22"/>
-        <RequestItem spaceId={2} assignSpace={assignSpace} reject={reject} location="Sci 2.81" startDate="7:00 27/04/22" endDate="8:00 27/04/22"/>
-        <RequestItem spaceId={3} assignSpace={assignSpace} reject={reject} location="Sci 2.81" startDate="7:00 27/04/22" endDate="8:00 27/04/22"/>
-        <RequestItem spaceId={4} assignSpace={assignSpace} reject={reject} location="Sci 2.81" startDate="7:00 27/04/22" endDate="8:00 27/04/22"/>
-        <RequestItem spaceId={5} assignSpace={assignSpace} reject={reject} location="Sci 2.81" startDate="7:00 27/04/22" endDate="8:00 27/04/22"/>
+        {
+          Object.keys(requestData).length === 0 ? <ListItemEmpty/> :
+          Object.keys(requestData).map((key, i) => {
+            let entry = requestData[key];
+            return <RequestItem spaceId={1} assignSpace={assignSpace} reject={reject} location={entry.location} startDate={entry.start_timestamp} endDate={entry.end_timestamp}/>
+          })
+        }
       </List>
   
       {assigning ? <AssignForm cancel={() => setAssigning(null)}/> : <></>}

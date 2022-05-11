@@ -6,6 +6,8 @@ const jwtMiddleware = require('../middlewares/jwt.middleware');
 const ParkingSpace = require('../models/parkingSpace.model');
 const ParkingLot = require('../models/parkingLot.model');
 const Account = require('../models/account.model');
+const BookingRequest = require('../models/bookingRequest.model');
+const Booking = require('../models/booking.model');
 const mongoose = require('mongoose');
 
 dotenv.config();
@@ -281,8 +283,7 @@ router.route('/users').get(async (req, res) => {
     return;
   }
 
-  Account.find()
-  .then(dbRes => {
+  Account.find().then(dbRes => {
     res.send(dbRes);
   }).catch(e => {
     console.log(e);
@@ -308,6 +309,44 @@ router.route('/deleteuser').post(async (req, res) => {
     res.send({ err: false, info: "Sucessful" });
   })
   .catch(e => {
+    console.log(e);
+    res.send({ err: true, info: "Database error" });
+  });
+});
+
+router.route('/bookingrequests').get(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
+  BookingRequest.find().then(dbRes => {
+    res.send(dbRes);
+  }).catch(e => {
+    console.log(e);
+    res.send({ err: true, info: "Database error" });
+  });
+});
+
+router.route('/bookings').get(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
+  Booking.find().then(dbRes => {
+    res.send(dbRes);
+  }).catch(e => {
     console.log(e);
     res.send({ err: true, info: "Database error" });
   });

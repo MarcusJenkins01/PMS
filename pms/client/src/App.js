@@ -11,6 +11,7 @@ import LogoutRoute from './components/Routes/LogoutRoute';
 import SpaceConfiguration from './components/Routes/AdminPage/Sections/ParkingLotConfiguration/SpaceConfiguration/SpaceConfiguration';
 import ParkingLotConfiguration from './components/Routes/AdminPage/Sections/ParkingLotConfiguration/ParkingLotConfiguration';
 import BookingRequests from './components/Routes/AdminPage/Sections/BookingRequests/BookingRequests';
+import Bookings from './components/Routes/AdminPage/Sections/Bookings/Bookings';
 import Statistics from './components/Routes/AdminPage/Sections/Statistics/Statistics';
 import UserManagement from './components/Routes/AdminPage/Sections/UserManagement/UserManagement';
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/admin" element={token && admin === true ? <AdminPage/> : <BookingPage/>}/>
           <Route path="/admin/lots" element={token && admin === true ? <ParkingLotConfiguration/> : <BookingPage/>}/>
           <Route path="/admin/requests" element={token && admin === true ? <BookingRequests/> : <BookingPage/>}/>
+          <Route path="/admin/bookings" element={token && admin === true ? <Bookings/> : <BookingPage/>}/>
           <Route path="/admin/statistics" element={token && admin === true ? <Statistics/> : <BookingPage/>}/>
           <Route path="/admin/users" element={token && admin === true ? <UserManagement/> : <BookingPage/>}/>
           <Route path="/admin/spaces/:lotid" element={token && admin === true ? <SpaceConfiguration/> : <BookingPage/>}/>

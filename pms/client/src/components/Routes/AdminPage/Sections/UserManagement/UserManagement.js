@@ -1,6 +1,7 @@
 import List from "../../Shared/List";
 import UserItem from "./UserItem";
 import ConfirmModal from "../../Shared/ConfirmModal";
+import Title from "../../../../Shared/Title";
 
 import "./UserManagement.css";
 import { useEffect, useState } from "react";
@@ -30,6 +31,8 @@ const UserManagement = (props) => {
 
   return (
     <div id="user-management">
+      <Title>User management</Title>
+
       <List>
         {
           Object.keys(userData).map((key, i) => {
