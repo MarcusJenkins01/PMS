@@ -69,8 +69,9 @@ const AddSpace = (props) => {
               Object.keys(props.spaceData).map((key, i) => {
                 let entry = props.spaceData[key];
                 let mPos = [entry.latitude, entry.longitude];
+                let blocked = entry.is_blocked;
 
-                return <SpaceMarker spaceName={entry.name} colour="red" position={mPos}/>
+                return <SpaceMarker spaceName={entry.name} colour={blocked ? "red" : "purple"} position={mPos}/>
               })
             }
 

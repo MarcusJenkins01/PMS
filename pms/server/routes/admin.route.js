@@ -144,6 +144,45 @@ router.route('/deletelot').post(async (req, res) => {
   });
 });
 
+router.route('/spacesbookings').get(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
+  ParkingSpace.aggregate([
+    {
+      $lookup: {
+        from: "bookings",
+        localField: "_id",
+        foreignField: "space_id",
+        as: "bookings"
+      }
+    },
+    {
+      $addFields:{
+        bookings_count: { $size: "$bookings" },
+        bookings: "$bookings"
+      }
+    }
+  ]).then(dbRes => {
+    if (dbRes.length === 0) {
+      res.send({ err: true, info: "No spaces found" });
+      return;
+    }
+
+    res.send(dbRes);
+  }).catch(e => {
+    console.log(e)
+    res.send({ err: true, info: "Database error" });
+  });
+});
+
 router.route('/addspace').post(async (req, res) => {
   if (!req.body.tokenValid) {
     res.send({ err: true, info: "Invalid token" });
@@ -215,8 +254,17 @@ router.route('/blockspace').post(async (req, res) => {
   ParkingSpace.findOneAndUpdate(
     { _id: mongoose.Types.ObjectId(spaceID) },
     { is_blocked: true }
-  ).then(() => {
-    res.send({ err: false, info: "Sucessful" });
+  ).then(async () => {
+    // Delete all bookings for that space and send email notification
+    let bookingsAffected = await Booking.find({ space_id: mongoose.Types.ObjectId(spaceID) });
+
+    for (let b in bookingsAffected) {
+      let email = b.email;
+      
+      console.log(email)
+    }
+
+    await Booking.deleteMany({ space_id: mongoose.Types.ObjectId(spaceID) });
   })
   .catch(e => {
     console.log(e);

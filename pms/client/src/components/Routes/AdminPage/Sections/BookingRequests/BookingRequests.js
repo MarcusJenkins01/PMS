@@ -10,10 +10,10 @@ import http from "../../../../../axios-configuration.js";
 
 const BookingRequests = (props) => {
   const [requestData, setRequestData] = useState({});
-  const [assigning, setAssigning] = useState();
+  const [assigning, setAssigning] = useState({});
 
-  const assignSpace = (id) => {
-    setAssigning(id);
+  const assignSpace = (id, key) => {
+    setAssigning({ id, key });
   };
   
   const reject = (id) => {
@@ -38,14 +38,17 @@ const BookingRequests = (props) => {
       <List>
         {
           Object.keys(requestData).length === 0 ? <ListItemEmpty/> :
-          Object.keys(requestData).map((key, i) => {
+          Object.keys(requestData).map(key => {
             let entry = requestData[key];
-            return <RequestItem spaceId={1} assignSpace={assignSpace} reject={reject} location={entry.location} startDate={entry.start_timestamp} endDate={entry.end_timestamp}/>
+
+            return <RequestItem requestID={entry._id} requestKey={key} assignSpace={assignSpace} reject={reject}
+              location={entry.location} startTime={entry.start_timestamp} endTime={entry.end_timestamp}/>
           })
         }
       </List>
   
-      {assigning ? <AssignForm cancel={() => setAssigning(null)}/> : <></>}
+      {assigning.id && assigning.key ? <AssignForm requestID={assigning.id}
+        requestData={requestData[assigning.key]} cancel={() => setAssigning({})}/> : <></>}
     </div>
   );
 };

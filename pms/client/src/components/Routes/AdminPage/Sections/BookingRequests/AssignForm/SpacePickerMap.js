@@ -1,5 +1,6 @@
 import { MapContainer, TileLayer, Popup } from 'react-leaflet';
 import SpaceMarker from '../../../../ParkingLotMap/SpaceMarker';
+import ListItemEmpty from '../../../Shared/ListItemEmpty';
 import './AssignForm.css';
 
 function SpacePickerMap(props) {
@@ -7,14 +8,18 @@ function SpacePickerMap(props) {
 
   return (
     <div className="map">
-      <MapContainer center={position} zoom={16} scrollWheelZoom={true} style={{ width: "100%", height: '100%'}}>
+      <MapContainer center={position} zoom={16} scrollWheelZoom={true} style={{ width: "100%", height: '100%', borderRadius: '1em'}}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           maxZoom={19}
         />
-          
-        <SpaceMarker position={[52.6232104, 1.2413629]} spaceId="A01">
-        </SpaceMarker>
+
+        {
+          props.availableSpaces.length === 0 ? <ListItemEmpty/> :
+          props.availableSpaces.map((entry, i) => {
+            return <SpaceMarker spaceName={entry.name} position={[entry.latitude, entry.longitude]}/>
+          })
+        }
       </MapContainer>
     </div>
   );

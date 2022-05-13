@@ -96,8 +96,7 @@ router.route('/register').post(async (req, res) => {
       password: hashedPass
     });
 
-    newAccount.save()
-    .then(() => {
+    newAccount.save().then(() => {
       res.send({ err: false, info: "Account successfully created" });
     })
     .catch(err => {

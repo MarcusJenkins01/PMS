@@ -11,17 +11,71 @@ dotenv.config();
 router.use(jwtMiddleware);
 
 router.route('/make').post(async (req, res) => {
-  let token = sanitize(req.body.token);
+  let location = sanitize(req.body.location);
+  let startTimestamp = sanitize(req.body.starttime);
+  let endTimestamp = sanitize(req.body.endtime);
 
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
 
+  if (!req.body.tokenPayload.email) {
+    res.send({ err: true, info: "Invalid credentials" });
+    return;
+  }
+
+  if (location.length === 0) {
+    res.send({ err: true, info: "Please enter a destination" });
+    return;
+  }
+
+  if (location.length > 100) {
+    res.send({ err: true, info: "Destination is too long (max 100)" });
+    return;
+  }
+
+  let newRequest = new BookingRequest({
+    email: req.body.tokenPayload.email,
+    location: location,
+    start_timestamp: startTimestamp,
+    end_timestamp: endTimestamp
+  });
+
+  newRequest.save().then(() => {
+    res.send({ err: false, info: "Booking request made" });
+  })
+  .catch(err => {
+    console.log(err);
+    res.send({ err: true, info: "Database error" });
+  });
 });
 
 router.route('/accept').post(async (req, res) => {
-  let token = sanitize(req.body.token);
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
+  let spaceID = sanitize(req.body.spaceID);
 });
 
 router.route('/reject').post(async (req, res) => {
-  let token = sanitize(req.body.token);
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
 });
 
 module.exports = router;
