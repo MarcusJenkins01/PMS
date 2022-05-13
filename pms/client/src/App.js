@@ -14,6 +14,7 @@ import BookingRequests from './components/Routes/AdminPage/Sections/BookingReque
 import Bookings from './components/Routes/AdminPage/Sections/Bookings/Bookings';
 import Statistics from './components/Routes/AdminPage/Sections/Statistics/Statistics';
 import UserManagement from './components/Routes/AdminPage/Sections/UserManagement/UserManagement';
+import DriverBooking from './components/Routes/DriverBooking/DriverBooking';
 
 function App() {
   const [token, setToken] = useState();
@@ -41,6 +42,7 @@ function App() {
           <Route path="/book" element={token ? <BookingPage/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/" element={token ? <BookingPage/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/logout" element={<LogoutRoute setToken={setToken}/>}/>
+          <Route path="/booking/:bookingid" element={<DriverBooking/>}/>
           <Route path="/admin" element={token && admin === true ? <AdminPage/> : <BookingPage/>}/>
           <Route path="/admin/lots" element={token && admin === true ? <ParkingLotConfiguration/> : <BookingPage/>}/>
           <Route path="/admin/requests" element={token && admin === true ? <BookingRequests/> : <BookingPage/>}/>

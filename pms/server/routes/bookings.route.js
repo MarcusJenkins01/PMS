@@ -2,6 +2,7 @@ const sanitize = require('mongo-sanitize');  // To protect against SQL injection
 const router = require('express').Router();
 const dotenv = require('dotenv');
 const jwtMiddleware = require('../middlewares/jwt.middleware');
+const mongoose = require('mongoose');
 
 let Booking = require('../models/booking.model');
 let BookingRequest = require('../models/bookingRequest.model');
@@ -48,6 +49,33 @@ router.route('/make').post(async (req, res) => {
   .catch(err => {
     console.log(err);
     res.send({ err: true, info: "Database error" });
+  });
+});
+
+router.route('/get/:bookingid').get(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  let bookingID = sanitize(req.params.bookingid);
+
+  Booking.aggregate([
+    {
+      $match: { _id: mongoose.Types.ObjectId(bookingID) }
+    },
+    {
+      $lookup: {
+        "from": "parkingspaces",
+        "let": { "spaceID": { $toObjectId: "$space_id" } },
+        pipeline: [
+          { $match: { $expr: { $eq: [ "$_id", "$$spaceID" ] } } },
+        ],
+        "as": "space"
+      }
+    }
+  ]).then(dbRes => {
+    res.send(dbRes);
   });
 });
 

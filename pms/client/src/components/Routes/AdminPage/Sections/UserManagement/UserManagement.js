@@ -37,7 +37,6 @@ const UserManagement = (props) => {
         {
           Object.keys(userData).map((key, i) => {
             let entry = userData[key];
-            console.log(entry.id_admin)
             return <UserItem isAdmin={entry.admin} userID={entry.email} userName={`${entry.first_name} ${entry.last_name}`} deleteUser={setConfirmID}/>
           })
         }
