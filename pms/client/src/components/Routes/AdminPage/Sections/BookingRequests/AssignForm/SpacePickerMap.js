@@ -17,7 +17,8 @@ function SpacePickerMap(props) {
         {
           props.availableSpaces.length === 0 ? <ListItemEmpty/> :
           props.availableSpaces.map((entry, i) => {
-            return <SpaceMarker spaceName={entry.name} position={[entry.latitude, entry.longitude]}/>
+            return <SpaceMarker onClick={() => props.pickSpace(entry._id)} colour={props.chosenSpace === entry._id ? "pink" : "purple"} 
+              spaceName={entry.name} position={[entry.latitude, entry.longitude]}/>
           })
         }
       </MapContainer>

@@ -255,16 +255,21 @@ router.route('/blockspace').post(async (req, res) => {
     { _id: mongoose.Types.ObjectId(spaceID) },
     { is_blocked: true }
   ).then(async () => {
-    // Delete all bookings for that space and send email notification
+    // Delete all bookings for that space and send email notification to users
     let bookingsAffected = await Booking.find({ space_id: mongoose.Types.ObjectId(spaceID) });
 
-    for (let b in bookingsAffected) {
-      let email = b.email;
-      
-      console.log(email)
-    }
+    if (bookingsAffected.length > 0) {
+      for (let b in bookingsAffected) {
+        let email = b.email;
+        
+        // Send email here
+        console.log(email);
+      }
+  
+      await Booking.deleteMany({ space_id: mongoose.Types.ObjectId(spaceID) });
+    };
 
-    await Booking.deleteMany({ space_id: mongoose.Types.ObjectId(spaceID) });
+    res.send({ err: false, info: "Success" });
   })
   .catch(e => {
     console.log(e);
@@ -290,6 +295,87 @@ router.route('/unblockspace').post(async (req, res) => {
     { is_blocked: false }
   ).then(() => {
     res.send({ err: false, info: "Sucessful" });
+  })
+  .catch(e => {
+    console.log(e);
+    res.send({ err: true, info: "Database error" });
+  });
+});
+
+router.route('/assignspace').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
+  let requestID = sanitize(req.body.requestID);
+  let spaceID = sanitize(req.body.spaceID);
+
+  BookingRequest.findById(requestID).then(async dbRes => {
+    if (Object.keys(dbRes).length === 0) {
+      res.send({ err: true, info: "Booking request not found" });
+      return;
+    }
+
+    let email = dbRes.email;
+    let startTime = dbRes.start_timestamp;
+    let endTime = dbRes.end_timestamp;
+    let paid = dbRes.paid;
+
+    // Check user who made the booking request still exists
+    let user = await Account.find({ email: email });
+    
+    if (Object.keys(user).length === 0) {
+      res.send({ err: true, info: "User not found (possibly deleted)" });
+      return;
+    }
+
+    // Check the space exists and isn't "blocked"
+    let space = await ParkingSpace.findById(spaceID);
+    
+    if (Object.keys(space).length === 0) {
+      res.send({ err: true, info: "Parking space not found" });
+      return;
+    }
+
+    if (space.is_blocked) {
+      res.send({ err: true, info: "Space is blocked" });
+      return;
+    }
+
+    // Check the space is available (duplicate of frontend for client-server security)
+    let currentBookings = await Booking.find({ space_id: mongoose.Types.ObjectId(spaceID) });
+
+    for (let b in currentBookings) {
+      let bStartTime = new Date(b.start_timestamp);
+      let bEndTime = new Date(b.end_timestamp);
+
+      if ((endTime - startTime) + (bEndTime - bStartTime) > (bEndTime - startTime)) {
+        res.send({ err: true, info: "Space not available" });
+        return;
+      }
+    }
+
+    // Insert a new booking in the database
+    let newBooking = new Booking({ 
+      email: email,
+      space_id: spaceID,
+      start_timestamp: startTime,
+      end_timestamp: startTime,
+      paid: paid
+    });
+    
+    await newBooking.save();
+
+    // Delete the booking request
+    BookingRequest.findByIdAndDelete(requestID).then(() => {
+      res.send({ err: false, info: "Success" });
+    });
   })
   .catch(e => {
     console.log(e);

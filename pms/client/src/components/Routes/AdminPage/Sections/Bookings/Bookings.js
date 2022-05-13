@@ -34,7 +34,8 @@ const Bookings = (props) => {
           Object.keys(bookingData).length === 0 ? <ListItemEmpty/> :
           Object.keys(bookingData).map((key, i) => {
             let entry = bookingData[key];
-            return <BookingItem bookingID={entry._id} moveSpace={moveSpace} userID={entry.user_id} spaceID={entry.space_id} startDate={entry.start_timestamp} endDate={entry.end_timestamp}/>
+            return <BookingItem bookingID={entry._id} moveSpace={moveSpace} email={entry.email}
+              startTime={entry.start_timestamp} endTime={entry.end_timestamp}/>
           })
         }
       </List>

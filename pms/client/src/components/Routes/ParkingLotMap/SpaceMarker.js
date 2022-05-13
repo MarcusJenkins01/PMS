@@ -16,7 +16,8 @@ function SpaceMarker(props) {
       icon={markerIcon}
       eventHandlers={{
         mouseover: () => {},
-        mouseout: () => {}
+        mouseout: () => {},
+        click: props.onClick || (() => {})
       }}
     />
   )
