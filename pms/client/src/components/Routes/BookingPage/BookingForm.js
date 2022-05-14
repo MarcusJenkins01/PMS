@@ -27,12 +27,12 @@ function BookingForm(props) {
       return;
     }
 
-    if (startDate == undefined) {
+    if (startDate == null) {
       setErrorText("Please pick a start date and time");
       return;
     }
 
-    if (endDate == undefined) {
+    if (endDate == null) {
       setErrorText("Please pick an end date and time");
       return;
     }

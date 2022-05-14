@@ -9,6 +9,7 @@ const Account = require('../models/account.model');
 const BookingRequest = require('../models/bookingRequest.model');
 const Booking = require('../models/booking.model');
 const mongoose = require('mongoose');
+const mailer = require('../middlewares/nodemailer.middleware');
 
 dotenv.config();
 
@@ -269,12 +270,16 @@ router.route('/blockspace').post(async (req, res) => {
     let bookingsAffected = await Booking.find({ space_id: mongoose.Types.ObjectId(spaceID) });
 
     if (bookingsAffected.length > 0) {
-      for (let b in bookingsAffected) {
-        let email = b.email;
-        
-        // Send email here
-        console.log(email);
-      }
+      let receivers = bookingsAffected.map(b => {
+        return b.email;
+      }).join(',');
+
+      mailer.sendMail({
+        from: `"UEA Parking Management System" <${process.env.SYSTEM_EMAIL}>`,
+        to: receivers,
+        subject: "Booking cancellation",
+        text: 'Hello, unfortunately the space for your booking is no longer available. You will not be charged.'
+      });
   
       await Booking.deleteMany({ space_id: mongoose.Types.ObjectId(spaceID) });
     };
@@ -380,7 +385,15 @@ router.route('/assignspace').post(async (req, res) => {
       paid: paid
     });
     
-    await newBooking.save();
+    newBooking.save().then(saveRes => {
+      console.log(saveRes)
+      mailer.sendMail({
+        from: `"UEA Parking Management System" <${process.env.SYSTEM_EMAIL}>`,
+        to: email,
+        subject: "Booking confirmation",
+        text: `Hello, thank you for booking with us! Please use this link to find your parking space, and to notify us of your arrival and departure. http://localhost:3000/booking/${saveRes._id}`
+      });
+    });
 
     // Delete the booking request
     BookingRequest.findByIdAndDelete(requestID).then(() => {
@@ -488,7 +501,7 @@ router.route('/bookings').get(async (req, res) => {
     return;
   }
 
-  Booking.find().then(dbRes => {
+  Booking.find({ departed: false }).then(dbRes => {
     res.send(dbRes);
   }).catch(e => {
     console.log(e);

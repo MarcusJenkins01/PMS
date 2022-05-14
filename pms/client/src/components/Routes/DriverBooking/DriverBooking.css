@@ -1,0 +1,27 @@
+#driver-booking {
+  max-width: 30em;
+  margin: auto;
+  height: auto;
+  box-sizing: border-box;
+  border-radius: 1em;
+  background-color: white;
+  padding: 1.5em;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.07);
+}
+
+#title-section {
+  font-size: 1.2em;
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: space-between;
+}
+
+#departed {
+  background-color: white;
+  border-radius: 1em;
+  padding: 2em;
+  max-width: 20em;
+  margin: auto;
+  text-align: center;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.07);
+}

@@ -9,7 +9,7 @@ const jwtMiddleware = (req, res, next) => {
   if (token != 'null') {
     jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
       req.body.tokenPayload = decoded;
-      req.body.tokenValid = decoded.id != null;
+      req.body.tokenValid = decoded != null && decoded.id != null;
     });
   } else {
     req.body.tokenPayload = {};
