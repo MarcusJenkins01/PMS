@@ -5,8 +5,6 @@ const LogoutRoute = (props) => {
   window.sessionStorage.removeItem('token');
   useEffect(() => props.setToken(null));
 
-  console.log("hi");
-
   return <Navigate to="/login"/>;
 };
 

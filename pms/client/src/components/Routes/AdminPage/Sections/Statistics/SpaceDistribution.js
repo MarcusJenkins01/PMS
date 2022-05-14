@@ -2,13 +2,13 @@ import Chart from "react-apexcharts";
 import { useState } from 'react';
 
 const SpaceDistribution = (props) => {
-  const [series, setSeries] = useState([19, 21, 44]);
-  const [options, setOptions] = useState({
+  const series = props.spaceDistribution.map(spaces => spaces.length);
+  const options = {
     chart: {
       width: 380,
       type: 'pie',
     },
-    labels: ['West car park', 'East car park', 'Main car park'],
+    labels: props.lotNames,
     responsive: [{
       breakpoint: 480,
       options: {
@@ -20,7 +20,7 @@ const SpaceDistribution = (props) => {
         }
       }
     }]
-  });
+  };
 
   return (
     <div id="space-distribution-chart">

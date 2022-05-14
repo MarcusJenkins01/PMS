@@ -2,18 +2,18 @@ import Chart from "react-apexcharts";
 import { useState } from 'react';
 
 const UsageChart = (props) => {
-  const [series, setSeries] = useState([
+  const series = [
     {
       name: 'Available',
-      data: props.availableData
+      data: props.availableData.map(datum => datum.length)
     },
     {
       name: 'Reserved',
-      data: props.reservedData
+      data: props.reservedData.map(datum => datum.length)
     }
-  ]);
+  ];
 
-  const [options, setOptions] = useState({
+  const options = {
     chart: {
       type: 'bar',
       height: 350,
@@ -43,7 +43,7 @@ const UsageChart = (props) => {
     },
     xaxis: {
       type: 'string',
-      categories: props.parkingLots,
+      categories: props.lotNames,
     },
     legend: {
       position: 'right',
@@ -52,7 +52,7 @@ const UsageChart = (props) => {
     fill: {
       opacity: 1
     }
-  });
+  };
 
   return (
     <div id="space-usage-chart">

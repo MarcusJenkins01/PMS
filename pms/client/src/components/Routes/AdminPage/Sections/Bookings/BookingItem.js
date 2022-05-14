@@ -10,7 +10,7 @@ const BookingItem = (props) => {
       left={<>
         <span className="email">{props.email}</span>
         <span className="starttime">{startTime.toLocaleString()}</span>
-        <span className="endtime">{startTime.toLocaleString()}</span>
+        <span className="endtime">{endTime.toLocaleString()}</span>
       </>}
       right={<>
         <RoundedButton colour="red" hPadding="2.5em" onClick={() => props.moveSpace(props.bookingID)}>Move space</RoundedButton>

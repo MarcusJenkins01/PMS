@@ -79,31 +79,4 @@ router.route('/get/:bookingid').get(async (req, res) => {
   });
 });
 
-router.route('/accept').post(async (req, res) => {
-  if (!req.body.tokenValid) {
-    res.send({ err: true, info: "Invalid token" });
-    return;
-  }
-
-  if (!req.body.tokenPayload.admin) {
-    res.send({ err: true, info: "Insufficient permissions" });
-    return;
-  }
-
-  let spaceID = sanitize(req.body.spaceID);
-});
-
-router.route('/reject').post(async (req, res) => {
-  if (!req.body.tokenValid) {
-    res.send({ err: true, info: "Invalid token" });
-    return;
-  }
-
-  if (!req.body.tokenPayload.admin) {
-    res.send({ err: true, info: "Insufficient permissions" });
-    return;
-  }
-
-});
-
 module.exports = router;

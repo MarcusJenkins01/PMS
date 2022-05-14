@@ -39,10 +39,20 @@ router.route('/lotdata').get(async (req, res) => {
 
   ParkingLot.aggregate([
     {
-      "$lookup": {
+      $lookup: {
         "from": "parkingspaces",
         "localField": "_id",
         "foreignField": "parking_lot_id",
+        pipeline: [
+          {
+            $lookup: {
+              from: "bookings",
+              localField: "_id",
+              foreignField: "space_id",
+              as: "bookings"
+            }
+          }
+        ],
         "as": "spaces"
       }
     }
@@ -364,9 +374,9 @@ router.route('/assignspace').post(async (req, res) => {
     // Insert a new booking in the database
     let newBooking = new Booking({ 
       email: email,
-      space_id: spaceID,
+      space_id: mongoose.Types.ObjectId(spaceID),
       start_timestamp: startTime,
-      end_timestamp: startTime,
+      end_timestamp: endTime,
       paid: paid
     });
     
