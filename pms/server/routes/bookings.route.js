@@ -66,7 +66,7 @@ router.route('/get/:bookingid').get(async (req, res) => {
 
   let bookingID = sanitize(req.params.bookingid);
 
-  Booking.aggregate([
+  let booking = await Booking.aggregate([
     {
       $match: { _id: mongoose.Types.ObjectId(bookingID) }
     },
@@ -88,9 +88,26 @@ router.route('/get/:bookingid').get(async (req, res) => {
         "as": "space"
       }
     }
-  ]).then(dbRes => {
-    res.send(dbRes[0]);
-  });
+  ]);
+
+  if (!booking[0].paid) {
+    res.send({ err: true, info: "NOT_PAID" });
+    return;
+  }
+
+  res.send(booking[0]);
+});
+
+router.route('/pricedata/:bookingid').get(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  let bookingID = sanitize(req.params.bookingid);
+  let booking = await Booking.findById(bookingID).select(['start_timestamp', 'end_timestamp']);
+
+  res.send(booking);
 });
 
 router.route('/arrived').post(async (req, res) => {
@@ -185,6 +202,15 @@ router.route('/departed').post(async (req, res) => {
     });
 
     res.send({ err: false, info: "Departed" });
+  });
+});
+
+router.route('/paid').post(async (req, res) => {
+  let bookingID = sanitize(req.body.bookingID);
+
+  Booking.findByIdAndUpdate(bookingID, { paid: true }).then(() => {
+    res.send({ success: true });
+    return;
   });
 });
 

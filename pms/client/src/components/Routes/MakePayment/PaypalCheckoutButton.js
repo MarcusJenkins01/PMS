@@ -1,26 +1,26 @@
 import { useState } from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import { Navigate } from "react-router";
+import http from "../../../axios-configuration";
 
 const PaypalCheckoutButton = (props) => {
     const{ product } = props;
-
     const [paidFor, setPaidFor] = useState(false);
     const [error, setError] = useState(null);
 
     const handleApprove = (orderId) =>{
-        // request to backend to fufill order 
-        // if response success 
-        setPaidFor(true);
-        // refresh user account 
-        //if response error, alert user
-        // setError("YOUR PAYment was processed successfully but didnt work please contact support at @support.uea.ac.uk")
-        
-
+        http.post(`/bookings/paid`, { bookingID: props.bookingID }).then(res => {
+            if (res.data.success) {
+                setPaidFor(true);
+                console.log("paid")
+            }
+        });
     };
 
-    if(paidFor){
-        // Display success message/email
-        alert("Thank you for your purchase, your spot have been reserved");
+    console.log(paidFor)
+
+    if (paidFor) {
+        return <Navigate to={`/booking/${props.bookingID}`}/>
     }
 
     if(error){
@@ -40,13 +40,8 @@ const PaypalCheckoutButton = (props) => {
 
         onClick={(data, actions)=>{
             // validate on button click
-            const alreadyReserved = false
-            if (alreadyReserved){
-                setError("You have already reserved a spot, check your current reserved spots or contact support");
-                return actions.reject()
-            }else{
-                return actions.resolve()
-            }
+            
+            return actions.resolve()
         }}
 
         createOrder={(data, actions) => {

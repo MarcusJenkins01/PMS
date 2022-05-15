@@ -3,9 +3,6 @@ import TextInput from "../../Forms/Inputs/TextInput";
 import RoundedButton from "../../Forms/Inputs/RoundedButton";
 import SubTextError from "../../Forms/SubTextError";
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import Checkout from "./Payment/Checkout";
 
 import TableDatePicker from "./DateTimePicker";
 
@@ -69,17 +66,7 @@ function BookingForm(props) {
   return (
     <Form process={processBookingRequest}>
       <TextInput name="location">Destination</TextInput>
-
       <TableDatePicker checkInDate={checkInDate} setcheckInDate={setcheckInDate} checkOutDate={checkOutDate} setcheckOutDate={setcheckOutDate}/>
-
-      <PayPalScriptProvider
-       options={{"client-id": "AcWK911Waq9ZCzo3AzwJjcYTqQtesHPgsxIwo24tjqRpBoBtbdIHYl_AcgHiirtf0aNA5U53BeycgSFk"}}
-       >
-        <div className="checkout">
-          { <Checkout checkInDate={checkInDate} checkOutDate={checkOutDate}/> }
-        </div>
-       </PayPalScriptProvider>
-      
       <RoundedButton colour="green" submit={true}>SUBMIT</RoundedButton>
       { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
     </Form>

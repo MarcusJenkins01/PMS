@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { Navigate, useParams } from 'react-router';
 import http from '../../../axios-configuration';
 import RoundedButton from '../../Forms/Inputs/RoundedButton';
 import ButtonSection from '../AdminPage/Shared/ButtonSection';
@@ -17,28 +17,39 @@ const DriverBooking = (props) => {
   const [errorText, setErrorText] = useState("");
   const [arrived, setArrived] = useState(false);
   const [departed, setDeparted] = useState(false);
+  const [notPaid, setNotPaid] = useState(false);
 
   let { bookingid } = useParams();
 
   useEffect(() => {
     http.get(`/bookings/get/${bookingid}`).then(res => {
-      if (!res.data.err) {
-        setBookingData(res.data);
-        setArrived(res.data.arrived);
-        setDeparted(res.data.departed);
+      if (res.data.err) {
+        if (res.data.info === 'NOT_PAID') {
+          setNotPaid(true);
+        }
 
-        navigator.geolocation.getCurrentPosition(pos => {
-          let location = [pos.coords.latitude, pos.coords.longitude];
-          setUserLocation(location);
-        });
-
-        navigator.geolocation.watchPosition(pos => {
-          let location = [pos.coords.latitude, pos.coords.longitude];
-          setUserLocation(location);
-        });
+        return;
       }
+
+      setBookingData(res.data);
+      setArrived(res.data.arrived);
+      setDeparted(res.data.departed);
+
+      navigator.geolocation.getCurrentPosition(pos => {
+        let location = [pos.coords.latitude, pos.coords.longitude];
+        setUserLocation(location);
+      });
+
+      navigator.geolocation.watchPosition(pos => {
+        let location = [pos.coords.latitude, pos.coords.longitude];
+        setUserLocation(location);
+      });
     })
   }, [bookingid]);
+
+  if (notPaid) {
+    return <Navigate to={`/pay/${bookingid}`}/>;
+  }
 
   if (!bookingData.space) {
     return (

@@ -1,0 +1,8 @@
+.checkout {
+  background-color: white;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.07);
+  max-width: 30em;
+  margin: auto;
+  border-radius: 1em;
+  padding: 2em;
+}

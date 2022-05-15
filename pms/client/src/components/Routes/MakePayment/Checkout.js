@@ -2,11 +2,11 @@ import PaypalCheckoutButton from "./PaypalCheckoutButton";
 import calcPay from "./calcPay";
 
 const Checkout = (props) => {
-  console.log(calcPay(props.checkInDate, props.checkOutDate));
+  let { hours, cost } = calcPay(props.checkInDate, props.checkOutDate);
 
   const product = {
-      description: "Parking Spot for x hours",
-      price: 10
+    description: `Parking Spot for ${hours} hours`,
+    price: cost
   }
   
   return (
@@ -16,12 +16,12 @@ const Checkout = (props) => {
       <p className="checkout-description">
         --
       </p>
-      <h1 className="checkout-price">price</h1>
+      <h1 className="checkout-price">£{cost}</h1>
     
       <div className="separator"></div>
       <div className="paypal">
         <div className="paypal-button-container">
-            <PaypalCheckoutButton product={product} />
+            <PaypalCheckoutButton product={product} bookingID={props.bookingID}/>
         </div>
       </div>
     </div>

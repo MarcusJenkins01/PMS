@@ -5,11 +5,11 @@ const multiply = (hours) => {
 };
 
 const calcPay = (checkInDate, checkOutDate) => {
-  var now = moment(checkInDate); //todays date
+  var start = moment(checkInDate);
   var end = moment(checkOutDate); 
-  var duration = moment.duration(now.diff(end));
-  var hours = duration.asHours();
-  let cost = multiply(hours)
+  var duration = moment.duration(end.diff(start));
+  var hours = duration.asHours().toFixed(2);
+  let cost = multiply(hours).toFixed(2);
 
   return { hours, cost };
 };

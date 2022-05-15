@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import "./DateTimePicker.css"
 import "react-datepicker/dist/react-datepicker.css";
-import calcPay from "./Payment/calcPay";
+import calcPay from "../MakePayment/calcPay";
 
 function TableDatePicker (props) {
   // define change function on check in date
@@ -11,6 +11,7 @@ function TableDatePicker (props) {
       props.setcheckInDate(date);
       props.setcheckOutDate(null);
   };
+
   // define change function on check out date
   const handleCheckOutDate = (date) => {
     props.setcheckOutDate(date);
@@ -44,16 +45,11 @@ function TableDatePicker (props) {
         </div>
     
         {props.checkInDate && props.checkOutDate && calcPay(props.checkInDate, props.checkOutDate) && (
-            <div className="summary">
+          <div className="summary">
             <p>
-                You have booked a space from {moment(props.checkInDate).format("LL")} 
-                to{" "} {moment(props.checkOutDate).format("LL")}.
+              Price for {calcPay(props.checkInDate, props.checkOutDate).hours} hours: £{calcPay(props.checkInDate, props.checkOutDate).cost}
             </p>
-            <p>
-              You have stayed for {calcPay(props.checkInDate, props.checkOutDate).hours} 
-            </p>
-            
-        </div>
+          </div>
         )}
     </div>
   );
