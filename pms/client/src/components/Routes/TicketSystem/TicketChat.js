@@ -9,6 +9,8 @@ import { useParams } from "react-router";
 
 import http from "../../../axios-configuration";
 import "./TicketSystem.css";
+import TextInput from "../../Forms/Inputs/TextInput";
+import RoundedButton from "../../Forms/Inputs/RoundedButton";
 
 const TicketChat = (props) => {
   const [ticketData, setTicketData] = useState({});
@@ -43,13 +45,23 @@ const TicketChat = (props) => {
 
   return(
     <div id="ticket-chat">
-      <Title>Messages</Title>
+      <Title>Ticket {ticketData._id}</Title>
       
       <div id="ticket-op">
-        {ticketData.name}
-        {ticketData.email}
-        {ticketData.message}
-        {ticketData.status}
+        <div id="top-section">
+          <div id="left">
+            <span>{ticketData.name}</span>
+            <span>{ticketData.email}</span>
+          </div>
+
+          <div id="right">
+            <span>{ticketData.status}</span>
+          </div>
+        </div>
+
+        <div id="message">
+          {ticketData.message}
+        </div>
       </div>
 
       <List>
@@ -67,6 +79,11 @@ const TicketChat = (props) => {
         </ConfirmModal>
         : <></>
       }
+
+      <div id="message-input-section">
+        <textarea name="message" cols="40" rows="5"></textarea>
+        <RoundedButton colour="green">Send</RoundedButton>
+      </div>
     </div>
   );
 };

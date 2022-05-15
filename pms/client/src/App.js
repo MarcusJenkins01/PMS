@@ -33,8 +33,6 @@ function App() {
     }
   }, []);
 
-  console.log(admin)
-
   return (
     <PageWrapper token={token} admin={admin}>
       <BrowserRouter>

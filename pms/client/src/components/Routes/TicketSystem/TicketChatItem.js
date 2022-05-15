@@ -1,21 +1,18 @@
 import ListItem from "./Shared/ListItem";
 import RoundedButton from "../../Forms/Inputs/RoundedButton";
 
-const TicketItem = (props) => {
-  console.log(props)
+const TicketChatItem = (props) => {
   return (
-    <ListItem
-      left={<>
+    <div className="ticket-message">
+      <div className="message-header">
         <span className="user-id">{props.email}</span>
-        <span className="message">{props.message}</span>
-      </>}
-      right={<>
-        <RoundedButton colour="green" hPadding="2.5em" href={`/tickets/list/${props.ticketID}`}>Send message</RoundedButton>
-      </>}
-    />
+      </div>
+
+      <div className="message">
+        {props.message}
+      </div>
+    </div>
   );
 };
 
-// Haven't worked on this, just thought a new item was needed for the messages.
-
-export default TicketItem;
+export default TicketChatItem;
