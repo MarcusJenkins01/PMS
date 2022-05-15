@@ -405,6 +405,24 @@ router.route('/assignspace').post(async (req, res) => {
   });
 });
 
+router.route('/rejectrequest').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  if (!req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
+  let requestID = sanitize(req.body.requestID);
+
+  BookingRequest.findByIdAndDelete(requestID).then(() => {
+    res.send({ err: false, info: "Rejected" });
+  });
+});
+
 router.route('/deletespace').post(async (req, res) => {
   if (!req.body.tokenValid) {
     res.send({ err: true, info: "Invalid token" });

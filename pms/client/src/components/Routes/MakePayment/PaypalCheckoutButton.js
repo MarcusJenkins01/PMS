@@ -3,6 +3,8 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { Navigate } from "react-router";
 import http from "../../../axios-configuration";
 
+const currency = "GBP";
+
 const PaypalCheckoutButton = (props) => {
     const{ product } = props;
     const [paidFor, setPaidFor] = useState(false);
@@ -51,7 +53,7 @@ const PaypalCheckoutButton = (props) => {
                     description: product.description,
                     amount: {
                         value: product.price
-                    }
+                    },
                 }
             ]
         });

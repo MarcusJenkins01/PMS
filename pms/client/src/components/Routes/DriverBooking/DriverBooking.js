@@ -64,15 +64,20 @@ const DriverBooking = (props) => {
   const confirmArrival = () => {
     if (arrived) { return; }
 
+    console.log("a")
+
     navigator.geolocation.getCurrentPosition(newestPos => {
+      console.log("b")
       http.post('/bookings/arrived', {
         bookingID: bookingData._id,
         userLocation: { latitude: newestPos.coords.latitude, longitude: newestPos.coords.longitude }
       }).then(res => {
         if (res.data.err) {
           setErrorText(res.data.info);
+          console.log("c")
           return;
         }
+        console.log("d")
   
         setArrived(true);
       });

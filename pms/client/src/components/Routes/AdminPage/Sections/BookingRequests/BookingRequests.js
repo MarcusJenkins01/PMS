@@ -17,7 +17,9 @@ const BookingRequests = (props) => {
   };
   
   const reject = (id) => {
-    
+    http.post('/admin/rejectrequest', { requestID: id }).then(() => {
+      window.location.reload();
+    });
   };
 
   useEffect(() => {

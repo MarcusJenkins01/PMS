@@ -2,6 +2,7 @@ import Form from "../../Forms/Form";
 import TextInput from "../../Forms/Inputs/TextInput";
 import RoundedButton from "../../Forms/Inputs/RoundedButton";
 import SubTextError from "../../Forms/SubTextError";
+import SuccessModal from "./SuccessModal";
 import { useState } from "react";
 
 import TableDatePicker from "./DateTimePicker";
@@ -13,6 +14,7 @@ const MAX_BOOKING_TIME = 10 * 24 * 60 * 60 * 1000;  // 10 days in milliseconds
 
 function BookingForm(props) {
   const [errorText, setErrorText] = useState("");
+  const [success, setSuccess] = useState(false);
   const [checkInDate, setcheckInDate] = useState(null);
   const [checkOutDate, setcheckOutDate] = useState(null);
 
@@ -59,17 +61,22 @@ function BookingForm(props) {
         setErrorText(res.data.info);
       } else {
         setErrorText("");
+        setSuccess(true);
       }
     });
   }
   
   return (
-    <Form process={processBookingRequest}>
-      <TextInput name="location">Destination</TextInput>
-      <TableDatePicker checkInDate={checkInDate} setcheckInDate={setcheckInDate} checkOutDate={checkOutDate} setcheckOutDate={setcheckOutDate}/>
-      <RoundedButton colour="green" submit={true}>SUBMIT</RoundedButton>
-      { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
-    </Form>
+    <>
+      <Form process={processBookingRequest}>
+        <TextInput name="location">Destination</TextInput>
+        <TableDatePicker checkInDate={checkInDate} setcheckInDate={setcheckInDate} checkOutDate={checkOutDate} setcheckOutDate={setcheckOutDate}/>
+        <RoundedButton colour="green" submit={true}>SUBMIT BOOKING</RoundedButton>
+        { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
+      </Form>
+
+      { success ? <SuccessModal setSuccess={setSuccess}/> : <></> }
+    </>
   );
 }
 
