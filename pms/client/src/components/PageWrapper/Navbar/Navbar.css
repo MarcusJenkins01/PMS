@@ -8,11 +8,26 @@
   color: #333;
 }
 
-.brand {
-  text-decoration: none;
-  color: #333;
+.navbar-left, .navbar-right {
+  display: flex;
+  align-items: center;
 }
 
+.brand {
+  display: inline-block;
+  text-decoration: none;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.brand>.logo {
+  display: inline-block;
+  background-image: url('../../../../public/img/logos/logo_square.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
 
 /* NavbarButton */
 .navbar-button {

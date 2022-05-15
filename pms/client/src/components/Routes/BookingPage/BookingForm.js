@@ -3,7 +3,11 @@ import TextInput from "../../Forms/Inputs/TextInput";
 import RoundedButton from "../../Forms/Inputs/RoundedButton";
 import SubTextError from "../../Forms/SubTextError";
 import { useState } from "react";
-import DatetimePicker from "./DatetimePicker";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import Checkout from "./Payment/Checkout";
+
+import TableDatePicker from "./DateTimePicker";
 
 import http from "../../../axios-configuration";
 
@@ -12,9 +16,8 @@ const MAX_BOOKING_TIME = 10 * 24 * 60 * 60 * 1000;  // 10 days in milliseconds
 
 function BookingForm(props) {
   const [errorText, setErrorText] = useState("");
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  //const [completed, setCompleted] = useState(false);
+  const [checkInDate, setcheckInDate] = useState(null);
+  const [checkOutDate, setcheckOutDate] = useState(null);
 
   const processBookingRequest = (formData) => {
     if (formData.location.length === 0) {
@@ -27,35 +30,37 @@ function BookingForm(props) {
       return;
     }
 
-    if (startDate == null) {
+    if (checkInDate == null) {
       setErrorText("Please pick a start date and time");
       return;
     }
 
-    if (endDate == null) {
+    if (checkOutDate == null) {
       setErrorText("Please pick an end date and time");
       return;
     }
 
-    let start = new Date(startDate);
-    let end = new Date(endDate)
+    let postData = { ...formData, starttime: checkInDate, endtime: checkOutDate };
 
-    if (start.getTime() < Date.now()) {
+    console.log(checkInDate);
+    console.log(postData)
+
+    if (checkInDate.getTime() < Date.now()) {
       setErrorText("Please enter a start time and date in the future");
       return;
     }
 
-    if (end - start < MIN_BOOKING_TIME) {
+    if (checkOutDate - checkInDate < MIN_BOOKING_TIME) {
       setErrorText("You must book at least 1 hour");
       return;
     }
 
-    if (end - start > MAX_BOOKING_TIME) {
+    if (checkOutDate - checkInDate > MAX_BOOKING_TIME) {
       setErrorText("You can only book up to 10 days");
       return;
     }
 
-    http.post('/bookings/make', formData).then(res => {
+    http.post('/bookings/make', postData).then(res => {
       if (res.data.err) {
         setErrorText(res.data.info);
       } else {
@@ -67,8 +72,19 @@ function BookingForm(props) {
   return (
     <Form process={processBookingRequest}>
       <TextInput name="location">Destination</TextInput>
-      <DatetimePicker setDate={setStartDate} name="starttime" ></DatetimePicker>
-      <DatetimePicker setDate={setEndDate} name="endtime"></DatetimePicker>
+      {/* <DatetimePicker setDate={setStartDate} name="starttime" ></DatetimePicker>
+      <DatetimePicker setDate={setEndDate} name="endtime"></DatetimePicker> */}
+      
+      <TableDatePicker checkInDate={checkInDate} setcheckInDate={setcheckInDate} checkOutDate={checkOutDate} setcheckOutDate={setcheckOutDate}/>
+
+      <PayPalScriptProvider
+       options={{"client-id": "AcWK911Waq9ZCzo3AzwJjcYTqQtesHPgsxIwo24tjqRpBoBtbdIHYl_AcgHiirtf0aNA5U53BeycgSFk"}}
+       >
+         <div className="checkout">
+          {<Checkout />}
+        </div>
+       </PayPalScriptProvider>
+      
       <RoundedButton colour="green" submit={true}>SUBMIT</RoundedButton>
       { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
     </Form>
