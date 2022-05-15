@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 const accountsRouter = require('./routes/accounts.route');
 const bookingsRouter = require('./routes/bookings.route');
 const adminRouter = require('./routes/admin.route');
-const chatRouter = require('./routes/chat.route');
+const ticketRouter = require('./routes/tickets.route');
 
 dotenv.config();
 
@@ -15,10 +15,10 @@ const port = process.env.PORT || 5000;
 
 // Allow cross-origin requests from port 3000, and add our Authorisation header to the allowed header list
 const corsOptions ={
-  origin: 'http://localhost:3000', 
+  origin: 'http://localhost:3000',
   credentials: true,
   methods: ['GET','POST','HEAD','PUT','PATCH','DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorisation'],
+  allowedHeaders: ['Content-Type', 'authorisation'],
   exposedHeaders: ['Content-Type']
 }
 app.use(cors(corsOptions));
@@ -29,7 +29,7 @@ app.use(express.json());
 app.use('/accounts', accountsRouter);
 app.use('/bookings', bookingsRouter);
 app.use('/admin', adminRouter);
-app.use('/chat', chatRouter);
+app.use('/tickets', ticketRouter);
 
 mongoose.connect(process.env.PMS_DB_URI, {
   useNewUrlParser: true,
@@ -42,8 +42,6 @@ mongoose.connect(process.env.PMS_DB_URI, {
   console.log(err);
   console.log('Database failed to connect');
 });
-
-const conn = mongoose.connection;
 
 app.listen(port, () => {
   console.log(`Express running on port ${port}`);

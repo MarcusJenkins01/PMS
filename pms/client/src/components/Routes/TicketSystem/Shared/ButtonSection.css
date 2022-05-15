@@ -1,0 +1,7 @@
+.button-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  column-gap: 1em;
+  flex-wrap: wrap;
+}

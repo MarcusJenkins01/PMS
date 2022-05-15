@@ -386,7 +386,6 @@ router.route('/assignspace').post(async (req, res) => {
     });
     
     newBooking.save().then(saveRes => {
-      console.log(saveRes)
       mailer.sendMail({
         from: `"UEA Parking Management System" <${process.env.SYSTEM_EMAIL}>`,
         to: email,

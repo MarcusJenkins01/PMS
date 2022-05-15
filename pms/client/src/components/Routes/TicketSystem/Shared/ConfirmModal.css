@@ -1,0 +1,22 @@
+.confirm-modal {
+  display: flex;
+  position: absolute;
+  box-shadow: 0 0 2em rgba(0, 0, 0, 0.15);
+  left: 50vw;
+  top: 50vh;
+  transform: translate(-50%, -100%);
+  box-sizing: border-box;
+  padding: 1.5em;
+  border-radius: 0.75em;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 25em;
+  row-gap: 3em;
+  background-color: white;
+}
+
+.confirm-modal-text {
+  color: rgb(56, 56, 56);
+  font-size: 1em;
+  word-wrap: break-word;
+}
