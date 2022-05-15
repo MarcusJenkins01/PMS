@@ -1,11 +1,8 @@
-import ListItem from "./Shared/ListItem";
-import RoundedButton from "../../Forms/Inputs/RoundedButton";
-
 const TicketChatItem = (props) => {
   return (
     <div className="ticket-message">
       <div className="message-header">
-        <span className="user-id">{props.email}</span>
+        <span className="sender">{props.sender}</span>
       </div>
 
       <div className="message">

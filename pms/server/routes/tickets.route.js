@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 let Ticket = require('../models/ticket.model');
 let Account = require('../models/account.model');
+let TicketChat = require('../models/ticketChat.model');
 
 router.use(jwtMiddleware);
 
@@ -49,6 +50,65 @@ router.route('/submit').post(async (req, res) => {
     });
 
     res.send({ err: false, info: "Ticket submitted" });
+  });
+});
+
+router.route('/message').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({ err: true, info: "Invalid token" });
+    return;
+  }
+
+  let ticketID = sanitize(req.body.ticketID);
+  let message = sanitize(req.body.message);
+
+  if (message.length === 0) {
+    res.send({ err: true, info: "Please enter a message!" });
+    return;
+  }
+
+  let ticket = await Ticket.findById(ticketID);
+
+  if (!ticket.email) {
+    res.send({ err: true, info: "Ticket not found" });
+    return;
+  }
+
+  if (ticket.status !== 'Open') {
+    res.send({ err: true, info: "Ticket is closed" });
+    return;
+  }
+
+  if ((ticket.email !== req.body.tokenPayload.email) && !req.body.tokenPayload.admin) {
+    res.send({ err: true, info: "Insufficient permissions" });
+    return;
+  }
+
+  let newChat = new TicketChat({
+    ticket_id: mongoose.Types.ObjectId(ticketID),
+    message: message,
+    admin: req.body.tokenPayload.admin
+  });
+
+  newChat.save().then(async () => {
+    if (!req.body.tokenPayload.admin) {
+      let admins = await Account.find({ admin: true });
+      
+      let receivers = admins.map(admin => {
+        return admin.email;
+      });
+  
+      let receiversCSV = receivers.join(',');
+  
+      mailer.sendMail({
+        from: `"UEA Parking Management System" <${process.env.SYSTEM_EMAIL}>`,
+        to: receiversCSV,
+        subject: "Ticket message",
+        text: `${req.body.tokenPayload.email} has added a message to their support ticket, click here http://localhost:3000/ticket/${ticketID} to view it.`
+      });
+    }
+
+    res.send({ err: false, info: "Message submitted" });
   });
 });
 

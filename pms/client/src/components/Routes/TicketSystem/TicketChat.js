@@ -14,7 +14,7 @@ import RoundedButton from "../../Forms/Inputs/RoundedButton";
 
 const TicketChat = (props) => {
   const [ticketData, setTicketData] = useState({});
-  const [confirmID, setConfirmID] = useState();
+  const [messageContent, setMessageContent] = useState("");
 
   let { ticketid } = useParams();
 
@@ -30,12 +30,14 @@ const TicketChat = (props) => {
     })
   }, [])
 
-  const deleteTicket = (id) => {
-    http.post('tickets/deleteticket', ({ ticketID: id })).then(res => {
-      console.log(res)
+  const sendMessage = () => {
+    if (ticketData._id == null) { return; }
+    if (messageContent.length === 0) { return; }
+
+    http.post('/tickets/message', ({ ticketID: ticketData._id, message: messageContent })).then(res => {
       window.location.reload();
     });
-  }
+  };
 
   if (!ticketData.ticketChats) {
     return (
@@ -67,22 +69,14 @@ const TicketChat = (props) => {
       <List>
         {
           ticketData.ticketChats.map(entry => {
-            return <TicketChatItem userID={entry.admin ? "Admin" : ticketData.name} message={entry.message} deleteTicket={setConfirmID}/>
+            return <TicketChatItem sender={entry.admin ? "Admin" : ticketData.name} message={entry.message}/>
           })
         }
       </List>
 
-      { 
-        confirmID ?
-        <ConfirmModal yes={() => deleteTicket(confirmID)} no={() => setConfirmID(null)}>
-          Are you sure you want to delete this ticket?
-        </ConfirmModal>
-        : <></>
-      }
-
       <div id="message-input-section">
-        <textarea name="message" cols="40" rows="5"></textarea>
-        <RoundedButton colour="green">Send</RoundedButton>
+        <textarea name="message" cols="40" rows="5" onChange={(e) => setMessageContent(e.target.value)}></textarea>
+        <RoundedButton colour={messageContent.length > 0 ? "green" : ""} onClick={sendMessage}>Send</RoundedButton>
       </div>
     </div>
   );
