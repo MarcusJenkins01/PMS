@@ -10,8 +10,8 @@ const calcPay = (checkInDate, checkOutDate) => {
   var duration = moment.duration(now.diff(end));
   var hours = duration.asHours();
   let cost = multiply(hours)
-  console.log("hours stayed: ",hours)
-  console.log("price: ", cost)
+
+  return { hours, cost };
 };
 
 export default calcPay;

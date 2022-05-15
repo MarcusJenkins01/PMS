@@ -76,7 +76,7 @@ function BookingForm(props) {
        options={{"client-id": "AcWK911Waq9ZCzo3AzwJjcYTqQtesHPgsxIwo24tjqRpBoBtbdIHYl_AcgHiirtf0aNA5U53BeycgSFk"}}
        >
         <div className="checkout">
-          {<Checkout checkInDate={checkInDate} checkOutDate={checkOutDate}/>}
+          { <Checkout checkInDate={checkInDate} checkOutDate={checkOutDate}/> }
         </div>
        </PayPalScriptProvider>
       

@@ -50,7 +50,7 @@ function TableDatePicker (props) {
                 to{" "} {moment(props.checkOutDate).format("LL")}.
             </p>
             <p>
-              You have stayed for {calcPay(props.checkInDate, props.checkOutDate).format("H HH")} 
+              You have stayed for {calcPay(props.checkInDate, props.checkOutDate).hours} 
             </p>
             
         </div>
