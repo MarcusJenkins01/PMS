@@ -8,6 +8,7 @@ const AdminPage = () => {
       <a href="/admin/bookings" className="selection-button">Bookings</a>
       <a href="/admin/statistics" className="selection-button">Statistics</a>
       <a href="/admin/users" className="selection-button">User management</a>
+      <a href="/tickets" className="selection-button">Tickets</a>
     </div>
   );
 };

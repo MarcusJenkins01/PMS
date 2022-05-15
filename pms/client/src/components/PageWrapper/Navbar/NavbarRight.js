@@ -7,7 +7,7 @@ function NavbarRight(props) {
         props.token ? <>
           {
             props.admin ? <NavbarButton href="/admin">Admin dashboard</NavbarButton>
-            : <NavbarButton href="/ticket/submit">Support</NavbarButton>
+            : <NavbarButton href="/support">Support</NavbarButton>
           }
           
           <NavbarButton href="/logout">Sign out</NavbarButton>

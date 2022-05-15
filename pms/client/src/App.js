@@ -17,6 +17,7 @@ import UserManagement from './components/Routes/AdminPage/Sections/UserManagemen
 import DriverBooking from './components/Routes/DriverBooking/DriverBooking';
 import TicketChat from './components/Routes/TicketSystem/TicketChat';
 import ViewTickets from './components/Routes/TicketSystem/ViewTickets';
+import TicketSystem from './components/Routes/TicketSystem/TicketSystem';
 
 function App() {
   const [token, setToken] = useState();
@@ -43,6 +44,7 @@ function App() {
           <Route path="/" element={token ? <BookingPage/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/logout" element={<LogoutRoute setToken={setToken}/>}/>
           <Route path="/booking/:bookingid" element={token ? <DriverBooking/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
+          <Route path="/support" element={token ? <TicketSystem/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/tickets" element={token ? <ViewTickets/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/ticket/:ticketid" element={token ? <TicketChat/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/admin" element={token && admin === true ? <AdminPage/> : <BookingPage/>}/>
