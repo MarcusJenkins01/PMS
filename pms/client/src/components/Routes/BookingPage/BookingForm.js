@@ -42,9 +42,6 @@ function BookingForm(props) {
 
     let postData = { ...formData, starttime: checkInDate, endtime: checkOutDate };
 
-    console.log(checkInDate);
-    console.log(postData)
-
     if (checkInDate.getTime() < Date.now()) {
       setErrorText("Please enter a start time and date in the future");
       return;
@@ -72,16 +69,14 @@ function BookingForm(props) {
   return (
     <Form process={processBookingRequest}>
       <TextInput name="location">Destination</TextInput>
-      {/* <DatetimePicker setDate={setStartDate} name="starttime" ></DatetimePicker>
-      <DatetimePicker setDate={setEndDate} name="endtime"></DatetimePicker> */}
-      
+
       <TableDatePicker checkInDate={checkInDate} setcheckInDate={setcheckInDate} checkOutDate={checkOutDate} setcheckOutDate={setcheckOutDate}/>
 
       <PayPalScriptProvider
        options={{"client-id": "AcWK911Waq9ZCzo3AzwJjcYTqQtesHPgsxIwo24tjqRpBoBtbdIHYl_AcgHiirtf0aNA5U53BeycgSFk"}}
        >
-         <div className="checkout">
-          {<Checkout />}
+        <div className="checkout">
+          {<Checkout checkInDate={checkInDate} checkOutDate={checkOutDate}/>}
         </div>
        </PayPalScriptProvider>
       

@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import "./DateTimePicker.css"
 import "react-datepicker/dist/react-datepicker.css";
+import calcPay from "./Payment/calcPay";
 
 function TableDatePicker (props) {
   // define change function on check in date
@@ -13,20 +14,6 @@ function TableDatePicker (props) {
   // define change function on check out date
   const handleCheckOutDate = (date) => {
     props.setcheckOutDate(date);
-  };
-
-  const multiply = (hours) => {
-    return hours * 3.5;
-  };
- 
-  const calcPay = (checkInDate, checkOutDate) => {
-    var now = moment(checkInDate); //todays date
-    var end = moment(checkOutDate); 
-    var duration = moment.duration(now.diff(end));
-    var hours = duration.asHours();
-    let cost = multiply(hours)
-    console.log("hours stayed: ",hours)
-    console.log("price: ", cost)
   };
 
   return (

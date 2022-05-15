@@ -1,10 +1,14 @@
 import PaypalCheckoutButton from "./PaypalCheckoutButton";
+import calcPay from "./calcPay";
 
-const Checkout = () => {
-    const product = {
-        description: "Parking Spot for x hours",
-        price: 10
-    }
+const Checkout = (props) => {
+  console.log(calcPay(props.checkInDate, props.checkOutDate));
+
+  const product = {
+      description: "Parking Spot for x hours",
+      price: 10
+  }
+  
   return (
     <div className="checkout">
       <h1>Checkout</h1>
