@@ -34,6 +34,7 @@ router.route('/submit').post(async (req, res) => {
   });
 
   newTicket.save().then(async saveRes => {
+    // Send notification to admins
     let admins = await Account.find({ admin: true });
     
     let receivers = admins.map(admin => {
@@ -47,6 +48,14 @@ router.route('/submit').post(async (req, res) => {
       to: receiversCSV,
       subject: "Support ticket",
       text: `${email} has logged a support ticket, click here http://localhost:3000/ticket/${saveRes._id} to view it.`
+    });
+
+    // Send link to user to refer to their ticket
+    mailer.sendMail({
+      from: `"UEA Parking Management System" <${process.env.SYSTEM_EMAIL}>`,
+      to: email,
+      subject: "Your support ticket",
+      text: `Hello, we have received your support ticket, and will be in touch as soon as possible. Click here http://localhost:3000/ticket/${saveRes._id} to view your ticket.`
     });
 
     res.send({ err: false, ticketID: saveRes._id });
@@ -97,7 +106,16 @@ router.route('/message').post(async (req, res) => {
   });
 
   newChat.save().then(async () => {
-    if (!req.body.tokenPayload.admin) {
+    if (req.body.tokenPayload.admin) {
+      // Notify user an admin responded
+      mailer.sendMail({
+        from: `"UEA Parking Management System" <${process.env.SYSTEM_EMAIL}>`,
+        to: ticket.email,
+        subject: "An admin has replied",
+        text: `Hello, an admin has responded to your ticket; please click here http://localhost:3000/ticket/${ticketID} to see their response.`
+      });
+    } else {
+      // Notify admins that a user has responded
       let admins = await Account.find({ admin: true });
       
       let receivers = admins.map(admin => {

@@ -7,6 +7,7 @@ import RoundedButton from "../../Forms/Inputs/RoundedButton";
 import SubTextLink from "../../Forms/SubTextLink";
 import SubTextError from "../../Forms/SubTextError";
 import RegistrationConfirmation from "../../Confirmations/RegistrationConfirmation";
+import { Navigate } from "react-router";
 
 import http from "../../../axios-configuration";
 
@@ -56,7 +57,7 @@ function RegisterForm() {
   }
 
   return (
-    registered ? <RegistrationConfirmation/> :
+    registered ? <Navigate to="/login"/> :
     <Form submitText="REGISTER" process={processRegister}>
       <TextInput name="fname" type="text">First name</TextInput>
       <TextInput name="lname" type="text">Last name</TextInput>

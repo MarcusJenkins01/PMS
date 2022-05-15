@@ -6,6 +6,7 @@ import SubTextLink from "../../Forms/SubTextLink";
 import SubTextError from "../../Forms/SubTextError";
 import LoginConfirmation from "../../Confirmations/LoginConfirmation";
 import { useState } from "react";
+import { Navigate } from "react-router";
 
 import http from "../../../axios-configuration";
 
@@ -50,7 +51,7 @@ function LoginForm(props) {
   }
   
   return (
-    success ? <LoginConfirmation/> :
+    success ? <Navigate to="/"/> :
     <Form process={processLogin}>
       <TextInput name="email" type="email">Email</TextInput>
       <PasswordInput name="pass">Password</PasswordInput>
