@@ -14,6 +14,7 @@ const UsageChart = (props) => {
   ];
 
   const options = {
+    colors : ['#8646D7', '#FF5677'],
     chart: {
       type: 'bar',
       height: 350,
@@ -50,7 +51,7 @@ const UsageChart = (props) => {
       offsetY: 40
     },
     fill: {
-      opacity: 1
+      colors: ['#8646D7', '#FF5677']
     }
   };
 
