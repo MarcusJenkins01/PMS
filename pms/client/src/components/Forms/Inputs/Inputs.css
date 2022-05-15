@@ -63,6 +63,11 @@ a.rounded-button {
   color: white;
 }
 
+.rounded-button.orange {
+  background-color: #faca47;
+  color: white;
+}
+
 form>.rounded-button[type="submit"] {
   margin-top: 1em;
 }

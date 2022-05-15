@@ -47,6 +47,8 @@ router.route('/make').post(async (req, res) => {
     end_timestamp: endTimestamp
   });
 
+  Booking.deleteMany
+
   newRequest.save().then(() => {
     res.send({ err: false, info: "Booking request made" });
   })

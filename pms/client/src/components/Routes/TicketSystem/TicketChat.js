@@ -32,6 +32,7 @@ const TicketChat = (props) => {
 
   const sendMessage = () => {
     if (ticketData._id == null) { return; }
+    if (ticketData.status !== 'Open') { return; }
     if (messageContent.length === 0) { return; }
 
     http.post('/tickets/message', ({ ticketID: ticketData._id, message: messageContent })).then(res => {
@@ -75,8 +76,8 @@ const TicketChat = (props) => {
       </List>
 
       <div id="message-input-section">
-        <textarea name="message" cols="40" rows="5" onChange={(e) => setMessageContent(e.target.value)}></textarea>
-        <RoundedButton colour={messageContent.length > 0 ? "green" : ""} onClick={sendMessage}>Send</RoundedButton>
+        <textarea disabled={ticketData.status !== 'Open'} name="message" cols="40" rows="5" onChange={(e) => setMessageContent(e.target.value)}></textarea>
+        <RoundedButton colour={ticketData.status === 'Open' && messageContent.length > 0 ? "green" : ""} onClick={sendMessage}>Send</RoundedButton>
       </div>
     </div>
   );

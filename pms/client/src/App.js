@@ -45,7 +45,7 @@ function App() {
           <Route path="/logout" element={<LogoutRoute setToken={setToken}/>}/>
           <Route path="/booking/:bookingid" element={token ? <DriverBooking/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/support" element={token ? <TicketSystem/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
-          <Route path="/tickets" element={token ? <ViewTickets/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
+          <Route path="/tickets" element={token ? <ViewTickets admin={admin}/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/ticket/:ticketid" element={token ? <TicketChat/> : <LoginPage setToken={setToken} setAdmin={setAdmin}/>}/>
           <Route path="/admin" element={token && admin === true ? <AdminPage/> : <BookingPage/>}/>
           <Route path="/admin/lots" element={token && admin === true ? <ParkingLotConfiguration/> : <BookingPage/>}/>

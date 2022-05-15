@@ -10,6 +10,10 @@
   color: #535353;
 }
 
+.form-subtext.link a {
+  color: #5628ff;
+}
+
 .form-subtext.error {
   color: #fd5b5b;
 }

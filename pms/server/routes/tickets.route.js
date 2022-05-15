@@ -49,7 +49,7 @@ router.route('/submit').post(async (req, res) => {
       text: `${email} has logged a support ticket, click here http://localhost:3000/ticket/${saveRes._id} to view it.`
     });
 
-    res.send({ err: false, info: "Ticket submitted" });
+    res.send({ err: false, ticketID: saveRes._id });
   });
 });
 
@@ -60,6 +60,12 @@ router.route('/message').post(async (req, res) => {
   }
 
   let ticketID = sanitize(req.body.ticketID);
+
+  if (ticketID == null || ticketID === 'null') {
+    res.send({err: true, info: "Invalid ticket ID" });
+    return;
+  }
+
   let message = sanitize(req.body.message);
 
   if (message.length === 0) {
@@ -104,7 +110,7 @@ router.route('/message').post(async (req, res) => {
         from: `"UEA Parking Management System" <${process.env.SYSTEM_EMAIL}>`,
         to: receiversCSV,
         subject: "Ticket message",
-        text: `${req.body.tokenPayload.email} has added a message to their support ticket, click here http://localhost:3000/ticket/${ticketID} to view it.`
+        text: `${ticket.email} has added a message to their support ticket, click here http://localhost:3000/ticket/${ticketID} to view it.`
       });
     }
 
@@ -131,7 +137,39 @@ router.route('/deleteticket').post(async (req, res) => {
     return;
   }
 
+  if (!req.body.tokenPayload.admin) {
+    res.send({err: true, info: "You can only close tickets, not delete them"});
+    return;
+  }
+
   let ticketID = sanitize(req.body.ticketID);
+
+  if (ticketID == null || ticketID === 'null') {
+    res.send({err: true, info: "Invalid ticket ID" });
+    return;
+  }
+
+  Ticket.findByIdAndDelete(ticketID).then(async () => {
+    res.send({err: false, info: "Successful" });
+  })
+  .catch(e => {
+    console.log(e);
+    res.send({err: true, info: "Database error" })
+  })
+});
+
+router.route('/closeticket').post(async (req, res) => {
+  if (!req.body.tokenValid) {
+    res.send({err: true, info: "Invalid token"});
+    return;
+  }
+
+  let ticketID = sanitize(req.body.ticketID);
+
+  if (ticketID == null || ticketID === 'null') {
+    res.send({err: true, info: "Invalid ticket ID" });
+    return;
+  }
 
   let ticket = await Ticket.findById(ticketID);
 
@@ -141,7 +179,7 @@ router.route('/deleteticket').post(async (req, res) => {
     return;
   }
 
-  Ticket.findByIdAndDelete(req.body.ticketID).then(async () => {
+  Ticket.findByIdAndUpdate(ticketID, { status: 'Closed' }).then(async () => {
     if (!req.body.tokenPayload.admin) {
       let admins = await Account.find({ admin: true });
     
@@ -155,7 +193,7 @@ router.route('/deleteticket').post(async (req, res) => {
         from: `"UEA Parking Management System" <${process.env.SYSTEM_EMAIL}>`,
         to: receiversCSV,
         subject: "Ticket closed",
-        text: `${email} has closed their support ticket.`
+        text: `${ticket.email} has closed their support ticket.`
       });
     }
 
@@ -163,7 +201,7 @@ router.route('/deleteticket').post(async (req, res) => {
   })
   .catch(e => {
     console.log(e);
-    res.send({err: true, info: "Database error" })
+    res.send({err: true, info: "Database error" });
   })
 });
 
@@ -174,6 +212,11 @@ router.route('/get/:ticketid').get(async (req, res) => {
   }
 
   let ticketID = sanitize(req.params.ticketid);
+
+  if (ticketID == null || ticketID === 'null') {
+    res.send({err: true, info: "Invalid ticket ID" });
+    return;
+  }
 
   Ticket.aggregate([
     {

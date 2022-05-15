@@ -5,11 +5,14 @@ import { useState } from "react";
 import TicketConfirmation from "../../Confirmations/TicketConfirmation";
 import http from "../../../axios-configuration";
 import SubTextError from "../../Forms/SubTextError";
+import SubTextLink from "../../Forms/SubTextLink";
+import { Navigate } from "react-router";
 
+import './TicketSystem.css';
 
 function TicketSystem () {
   const [errorText, setErrorText] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [ticketID, setTicketID] = useState(null);
 
   const SubmitTicket = (ticketData) => {
     let name = ticketData.name;
@@ -24,23 +27,26 @@ function TicketSystem () {
       if (res.data.err) {
         setErrorText(res.data.info);
         return;
-      } else {
-        setSuccess(true);
       }
-    });
 
-    console.log(ticketData);
+      setTicketID(res.data.ticketID);
+    });
   };
 
   return (
-    success ? <TicketConfirmation/>:
-    <Form process={SubmitTicket}>
-      <TextInput name="name" type="text">What should we call you?</TextInput>
-      <TextInput name="message" type="text">How can we help?</TextInput>
-      <RoundedButton colour="green" submit={true}>SEND</RoundedButton>
-
-      { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
-    </Form>
+    <div id="ticket-system">
+      {
+      ticketID ? <Navigate to={`/ticket/${ticketID}`}/>:
+      <Form process={SubmitTicket}>
+        <TextInput name="name" type="text">What should we call you?</TextInput>
+        <TextInput name="message" type="text">How can we help?</TextInput>
+        <RoundedButton colour="green" submit={true}>SEND</RoundedButton>
+        
+        <SubTextLink textPart1="Already have a ticket? Click " href="/tickets" textPart2=" to view your tickets"/>
+        { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
+      </Form>
+      }
+    </div>
   );
 }
 
