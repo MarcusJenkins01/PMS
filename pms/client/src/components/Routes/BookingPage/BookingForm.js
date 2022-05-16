@@ -2,7 +2,7 @@ import Form from "../../Forms/Form";
 import TextInput from "../../Forms/Inputs/TextInput";
 import RoundedButton from "../../Forms/Inputs/RoundedButton";
 import SubTextError from "../../Forms/SubTextError";
-import SuccessModal from "./SuccessModal";
+import RequestSuccess from "./RequestSuccess";
 import { useState } from "react";
 
 import TableDatePicker from "./DateTimePicker";
@@ -67,15 +67,14 @@ function BookingForm(props) {
   }
   
   return (
+    success ? <RequestSuccess/> :
     <>
       <Form process={processBookingRequest}>
         <TextInput name="location">Destination</TextInput>
         <TableDatePicker checkInDate={checkInDate} setcheckInDate={setcheckInDate} checkOutDate={checkOutDate} setcheckOutDate={setcheckOutDate}/>
-        <RoundedButton colour="green" submit={true}>SUBMIT BOOKING</RoundedButton>
+        <div id="submit-button-container"><RoundedButton colour="green" submit={true}>SUBMIT BOOKING</RoundedButton></div>
         { errorText.length > 0 ? <SubTextError errorText={errorText}/> : <></> }
       </Form>
-
-      { success ? <SuccessModal setSuccess={setSuccess}/> : <></> }
     </>
   );
 }
