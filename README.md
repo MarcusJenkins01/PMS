@@ -1,5 +1,1 @@
-# PMS
-
-In order to run the clientside and serverside concurrently, use the command:
-
-`npm run all`
+A parking management system for booking parking spaces.
